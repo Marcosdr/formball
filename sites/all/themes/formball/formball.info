@@ -1,0 +1,7 @@
+
+name = formball
+description = Formball theme using Pure CSS.
+core = 7.x
+base theme = stark
+
+stylesheets[all][] = css/styles.css
