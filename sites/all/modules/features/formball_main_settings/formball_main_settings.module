@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Main Settings feature.
+ */
+
+include_once 'formball_main_settings.features.inc';
