@@ -4,4 +4,9 @@ description = Formball theme using Pure CSS.
 core = 7.x
 base theme = stark
 
-stylesheets[all][] = css/formball-styles.css
+stylesheets[all][] = assets/css/formball-styles.css
+stylesheets[all][] = assets/css/base.css
+
+regions[navigation] = Navigation
+regions[sidebar_left] = Sidebar left
+regions[content] = Content
