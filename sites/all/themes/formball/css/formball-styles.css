@@ -1,0 +1,16 @@
+/**
+ * @file
+ * Display Suite Formball 2-col stylesheet.
+ */
+
+.ds-left {
+    /* Styles for the "left" region go here */
+    float: left; /* LTR */
+    width: 20%;
+}
+
+.ds-right {
+    /* Styles for the "right" region go here */
+    float: left; /* LTR */
+    width: 80%;
+}
