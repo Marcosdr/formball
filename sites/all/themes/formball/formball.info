@@ -6,6 +6,10 @@ base theme = stark
 
 stylesheets[all][] = assets/css/formball-styles.css
 stylesheets[all][] = assets/css/base.css
+stylesheets[all][] = assets/css/pure-sm.css
+stylesheets[all][] = assets/css/pure-md.css
+stylesheets[all][] = assets/css/pure-lg.css
+
 
 regions[navigation] = Navigation
 regions[sidebar_left] = Sidebar left

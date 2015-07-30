@@ -1,0 +1,13 @@
+/*
+ * -- TABLET (AND UP) MEDIA QUERIES --
+ * On tablets and other medium-sized devices, we want to customize some
+ * of the mobile styles.
+ */
+@media screen and (min-width: 48em) {
+
+    #sidebar {
+
+        background-color: #007700;
+    }
+
+}

@@ -94,7 +94,7 @@
   <div id="page" class="pure-u-1 pure-u-sm-5-6 pure-u-md-20-24 navigation">
 
     <div id="main" class="pure-g">
-      <div id="sidebar-left" class="pure-u-1 pure-u-sm-1 pure-u-md-1 pure-u-lg-1-3"">
+      <div id="sidebar" class="pure-u-1 pure-u-sm-1 pure-u-md-1 pure-u-lg-1-3"">
         This gives you a nice solid line in the editor showing where the 80 character limit is. I leave the "Wrap when typing reaches right margin" setting unchecked; otherwise, PhpStorm will automatically insert line breaks when I hit 80 characters. Drupal's coding standards do allow more than 80 characters in some situations, so it's best not to require it.
       This gives you a nice solid line in the editor showing where the 80 character limit is. I leave the "Wrap when typing reaches right margin" setting unchecked; otherwise, PhpStorm will automatically insert line breaks when I hit 80 characters. Drupal's coding standards do allow more than 80 characters in some situations, so it's best not to require it.
       This gives you a nice solid line in the editor showing where the 80 character limit is. I leave the "Wrap when typing reaches right margin" setting unchecked; otherwise, PhpStorm will automatically insert line breaks when I hit 80 characters. Drupal's coding standards do allow more than 80 characters in some situations, so it's best not to require it.

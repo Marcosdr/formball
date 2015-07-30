@@ -5,3 +5,11 @@
     box-sizing: border-box;
 }
 
+#layout {
+    height: 100%;
+    position: absolute;
+}
+
+#navigation, #main {
+    height: 100%;
+}

@@ -1,0 +1,16 @@
+/*
+ * -- TABLET (AND UP) MEDIA QUERIES --
+ * On phones and other small-sized devices, we want to customize some
+ * of the mobile styles.
+ */
+@media screen and (min-width: 35.5em) {
+
+    #sidebar {
+        position: relative;
+        padding-bottom: 15%;
+        height: 0;
+        overflow: auto;
+        background-color: #b93f3f;
+    }
+
+}
