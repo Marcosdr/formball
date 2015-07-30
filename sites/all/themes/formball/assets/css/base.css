@@ -1,3 +1,47 @@
+/**
+ *------------------------------------------------------
+ *  Base style
+ *------------------------------------------------------
+ */
+
+/**
+ *------------------------------------------------------
+ *  Colors
+ *------------------------------------------------------
+ *
+ *
+ *  #252a3a: Dark blue (Navigation)
+ *  #1b98f8: Light blue (Links, Button & featured ticket)
+ *  #4b7197: Blue (Navigation Labels)
+ *  #ffc94c: Yellow
+ *  #41ccb4: Cyan
+ *  #40c365: Green
+ *  #eeeeee: Light Grey (Sidebar background)
+ *  #dddddd: Grey (Sidebar lines)
+ *  #999999: Tan (Info text)
+ *  #333333: Black (Text)
+ *
+ */
+
+/**
+ *------------------------------------------------------
+ *  Typeface
+ *------------------------------------------------------
+ *
+ *
+ *  Sans Serif
+ *  #1b98f8: Light blue (Links, Button & featured ticket)
+ *  #4b7197: Blue (Navigation Labels)
+ *  #ffc94c: Yellow
+ *  #41ccb4: Cyan
+ *  #40c365: Green
+ *  #eeeeee: Light Grey (Sidebar background)
+ *  #dddddd: Grey (Sidebar lines)
+ *  #999999: Tan (Info text)
+ *  #333333: Black (Text)
+ *
+ */
+
 .pure-g > div {
     border: 1px #710909 solid;
     -webkit-box-sizing: border-box;
@@ -5,11 +49,76 @@
     box-sizing: border-box;
 }
 
+a {
+    text-decoration: none;
+    color: #1b98f8;
+}
+
+/*
+ * -- HELPER STYLES --
+ * Over-riding some of the .pure-button styles to make my buttons look unique
+ */
+.primary-button,
+.secondary-button {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border-radius: 20px;
+}
+.primary-button {
+    color: #fff;
+    background: #1b98f8;
+    margin: 1em 0;
+}
+.secondary-button {
+    background: #fff;
+    border: 1px solid #ddd;
+    color: #666;
+    padding: 0.5em 2em;
+    font-size: 80%;
+}
+
 #layout {
     height: 100%;
     position: absolute;
+    margin: 0;
+    padding: 0;
 }
 
-#navigation, #main {
-    height: 100%;
+#navigation-wrapper {
+    background-color: #252a3a;
+    height: 40px;
 }
+    #navigation{
+        text-align: left;
+    }
+
+        #navigation .nav-menu{
+            box-sizing: border-box;
+        }
+
+            #navigation .nav-list{
+                list-style: outside none none;
+                margin: 0;
+                padding: 0;
+                position: relative;
+            }
+
+                #navigation .nav-item{
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                    position: relative;
+                }
+
+                    #navigation .nav-link:hover,
+                    #navigation .nav-link:focus {
+                        background: rgb(55, 60, 90);
+                    }
+                    #navigation .nav-link {
+                        display: block;
+                        color: #fff;
+                        margin-left: 0.5em;
+                        padding: 0.5em 1em;
+                    }
+

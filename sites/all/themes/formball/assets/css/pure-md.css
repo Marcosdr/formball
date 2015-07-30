@@ -6,8 +6,24 @@
 @media screen and (min-width: 48em) {
 
     #sidebar {
-
         background-color: #007700;
+    }
+
+    #page {
+        left: 150px;
+        position: relative;
+        width: calc(100% - 150px);
+    }
+
+    #page, #main{
+        height: 100%;
+    }
+
+
+    #navigation-wrapper {
+        width: 150px;
+        position: fixed;
+        height: 100%;
     }
 
 }

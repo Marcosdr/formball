@@ -6,11 +6,15 @@
 @media screen and (min-width: 35.5em) {
 
     #sidebar {
-        position: relative;
-        padding-bottom: 15%;
+        padding-bottom: 40%;
         height: 0;
         overflow: auto;
         background-color: #b93f3f;
     }
 
+
+
+    #navigation {
+        padding: 2em 0;
+    }
 }
