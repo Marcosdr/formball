@@ -85,6 +85,14 @@ a {
     padding: 0;
 }
 
+.center-nav {
+    padding: 0.625em; /* 10 */
+    margin-left: auto;
+    margin-right: auto;
+    width: 4em;
+}
+
+
 #navigation-wrapper {
     background-color: #252a3a;
     height: 40px;

@@ -88,8 +88,35 @@
 <div id="layout" class="pure-g">
 
   <div id="navigation-wrapper" class="pure-u-1 pure-u-sm-1 pure-u-md-4-24 navigation">
+
+    <?php if ($logo): ?>
+      <div id="logo-wrapper" class="center-nav">
+        <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
+          <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
+        </a>
+      </div>
+    <?php endif; ?>
+
     <div id="navigation">
-      <div id="nav-menu">
+
+        <?php if ($main_menu): ?>
+          <div id="nav-menu">
+            <?php print theme('links__system_main_menu', array(
+              'links' => $main_menu,
+              'attributes' => array(
+                'id' => 'main-menu-links',
+                'class' => array('nav-list', 'clearfix'),
+              ),
+              'heading' => array(
+                'text' => t('Main menu'),
+                'level' => 'h2',
+                'class' => array('element-invisible'),
+              ),
+            )); ?>
+          </div> <!-- /#main-menu -->
+        <?php endif; ?>
+
+
 
           <ul class="nav-list">
         <li class="nav-item">
