@@ -9,12 +9,12 @@
         padding-bottom: 40%;
         height: 0;
         overflow: auto;
-        background-color: #b93f3f;
+        background-color: #eeeeee;
     }
 
 
 
     #navigation {
-        padding: 2em 0;
+        padding: 1em 0;
     }
 }

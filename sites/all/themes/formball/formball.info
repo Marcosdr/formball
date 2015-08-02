@@ -13,4 +13,6 @@ stylesheets[all][] = assets/css/pure-lg.css
 
 regions[navigation] = Navigation
 regions[sidebar_left] = Sidebar left
+regions[help] = Help
+regions[highlighted] = Highlighted
 regions[content] = Content

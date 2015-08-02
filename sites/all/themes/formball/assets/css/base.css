@@ -54,6 +54,10 @@ a {
     color: #1b98f8;
 }
 
+#secondary-menu {
+    display: block;
+}
+
 /*
  * -- HELPER STYLES --
  * Over-riding some of the .pure-button styles to make my buttons look unique
@@ -80,6 +84,7 @@ a {
 
 #layout {
     height: 100%;
+    width: 100%;
     position: absolute;
     margin: 0;
     padding: 0;
@@ -130,3 +135,12 @@ a {
                         padding: 0.5em 1em;
                     }
 
+#main-content {
+    padding: 1em 2em;
+}
+
+
+#sidebar .sidebar-item {
+    padding: 0.9em 1em;
+    border-bottom: 1px solid #ddd;
+}

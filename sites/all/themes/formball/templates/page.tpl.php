@@ -89,66 +89,104 @@
 
   <div id="navigation-wrapper" class="pure-u-1 pure-u-sm-1 pure-u-md-4-24 navigation">
 
-    <?php if ($logo): ?>
-      <div id="logo-wrapper" class="center-nav">
-        <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
-          <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
-        </a>
-      </div>
-    <?php endif; ?>
-
     <div id="navigation">
 
-        <?php if ($main_menu): ?>
-          <div id="nav-menu">
-            <?php print theme('links__system_main_menu', array(
-              'links' => $main_menu,
+      <div id="nav-header">
+
+        <?php if ($logo): ?>
+          <div id="logo-wrapper" class="center-nav">
+            <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
+              <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
+            </a>
+          </div>
+        <?php endif; ?>
+
+        <?php if ($secondary_menu): ?>
+          <div id="secondary-menu" class="navigation">
+            <?php print theme('links__system_secondary_menu', array(
+              'links' => $secondary_menu,
               'attributes' => array(
-                'id' => 'main-menu-links',
-                'class' => array('nav-list', 'clearfix'),
+                'id' => 'secondary-menu-links',
+                'class' => array('links', 'inline', 'clearfix'),
               ),
               'heading' => array(
-                'text' => t('Main menu'),
+                'text' => t('Secondary menu'),
                 'level' => 'h2',
                 'class' => array('element-invisible'),
               ),
             )); ?>
-          </div> <!-- /#main-menu -->
+          </div> <!-- /#secondary-menu -->
         <?php endif; ?>
 
-
-
-          <ul class="nav-list">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Important</a>
-        </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Sent</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Play</a>
-          </li>
-        </ul>
-
-
       </div>
+
+
+      <?php if ($main_menu): ?>
+        <div id="nav-menu">
+          <?php print theme('links__system_main_menu', array(
+            'links' => $main_menu,
+            'attributes' => array(
+              'id' => 'main-menu-links',
+              'class' => array('nav-list', 'clearfix'),
+            ),
+            'heading' => array(
+              'text' => t('Main menu'),
+              'level' => 'h2',
+              'class' => array('element-invisible'),
+            ),
+          )); ?>
+        </div> <!-- /#main-menu -->
+      <?php endif; ?>
+
     </div>
   </div>
 
+
   <div id="page" class="pure-u-1 pure-u-sm-1 pure-u-md-21-24 navigation">
 
-    <div id="main" class="pure-g">
+    <div id="main" class="pure-g clearfix">
       <div id="sidebar" class="pure-u-1 pure-u-sm-1 pure-u-md-1 pure-u-lg-1-3">
-        This gives you a nice solid line in the editor showing where the 80 character limit is. I leave the "Wrap when typing reaches right margin" setting unchecked; otherwise, PhpStorm will automatically insert line breaks when I hit 80 characters. Drupal's coding standards do allow more than 80 characters in some situations, so it's best not to require it.
-      This gives you a nice solid line in the editor showing where the 80 character limit is. I leave the "Wrap when typing reaches right margin" setting unchecked; otherwise, PhpStorm will automatically insert line breaks when I hit 80 characters. Drupal's coding standards do allow more than 80 characters in some situations, so it's best not to require it.
-      This gives you a nice solid line in the editor showing where the 80 character limit is. I leave the "Wrap when typing reaches right margin" setting unchecked; otherwise, PhpStorm will automatically insert line breaks when I hit 80 characters. Drupal's coding standards do allow more than 80 characters in some situations, so it's best not to require it.
-      This gives you a nice solid line in the editor showing where the 80 character limit is. I leave the "Wrap when typing reaches right margin" setting unchecked; otherwise, PhpStorm will automatically insert line breaks when I hit 80 characters. Drupal's coding standards do allow more than 80 characters in some situations, so it's best not to require it.
-      This giv
+
+        <?php if ($page['sidebar_left']): ?>
+          <div id="sidebar-left" class="column sidebar">
+              <?php print render($page['sidebar_left']); ?>
+            </div> <!-- /.section, /#sidebar-first -->
+        <?php endif; ?>
+
       </div>
 
 
       <div id="main-content" class="pure-u-1 pure-u-sm-1 pure-u-md-1 pure-u-lg-2-3">
-          This gives you a nice solid line in the editor showing where the 80 character limit is. I leave the "Wrap when typing reaches right margin" setting unchecked; otherwise, PhpStorm will automatically insert line breaks when I hit 80 characters. Drupal's coding standards do allow more than 80 characters in some situations, so it's best not to require it.
+
+        <?php if ($messages): ?>
+          <div id="messages"><div class="section clearfix">
+              <?php print $messages; ?>
+            </div></div> <!-- /.section, /#messages -->
+        <?php endif; ?>
+
+
+        <?php if ($page['highlighted']): ?><div id="highlighted"><?php print render($page['highlighted']); ?></div><?php endif; ?>
+        <a id="main-content"></a>
+        <?php print render($title_prefix); ?>
+        <?php if ($title): ?>
+          <h1 class="title" id="page-title">
+            <?php print $title; ?>
+          </h1>
+        <?php endif; ?>
+        <?php print render($title_suffix); ?>
+        <?php if ($tabs): ?>
+          <div class="tabs">
+            <?php print render($tabs); ?>
+          </div>
+        <?php endif; ?>
+        <?php print render($page['help']); ?>
+        <?php if ($action_links): ?>
+          <ul class="action-links">
+            <?php print render($action_links); ?>
+          </ul>
+        <?php endif; ?>
+        <?php print render($page['content']); ?>
+        <?php print $feed_icons; ?>
 
 
       </div>

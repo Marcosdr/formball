@@ -7,11 +7,11 @@
 
     #sidebar {
         /* position: relative; */
-        padding-bottom: 0;
         height: 100%;
         overflow: auto;
-        background-color: #0000FF;
+        background-color: #eeeeee;
         width: 350px;
+        padding-bottom: 0;
     }
     #page, #main, #main-content {
         height: 100%;
