@@ -5,6 +5,12 @@
  */
 @media screen and (min-width: 64em) {
 
+    /* --------------------------- */
+    .pureCSS {
+        background-color: blue;
+    }
+    /* --------------------------- */
+
     #sidebar {
         /* position: relative; */
         height: 100%;

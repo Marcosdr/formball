@@ -30,15 +30,10 @@
  *
  *
  *  Sans Serif
- *  #1b98f8: Light blue (Links, Button & featured ticket)
- *  #4b7197: Blue (Navigation Labels)
- *  #ffc94c: Yellow
- *  #41ccb4: Cyan
- *  #40c365: Green
- *  #eeeeee: Light Grey (Sidebar background)
- *  #dddddd: Grey (Sidebar lines)
- *  #999999: Tan (Info text)
- *  #333333: Black (Text)
+ *
+ *
+ *
+ *
  *
  */
 
@@ -47,6 +42,10 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
 }
 
 a {
@@ -85,7 +84,6 @@ a {
 #layout {
     height: 100%;
     width: 100%;
-    position: absolute;
     margin: 0;
     padding: 0;
 }

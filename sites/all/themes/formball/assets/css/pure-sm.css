@@ -5,14 +5,18 @@
  */
 @media screen and (min-width: 35.5em) {
 
+    /* --------------------------- */
+    .pureCSS {
+        background-color: red;
+    }
+    /* --------------------------- */
+
     #sidebar {
         padding-bottom: 40%;
         height: 0;
         overflow: auto;
         background-color: #eeeeee;
     }
-
-
 
     #navigation {
         padding: 1em 0;

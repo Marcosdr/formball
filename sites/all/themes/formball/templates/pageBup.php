@@ -87,103 +87,27 @@
 ?>
 <div id="layout" class="pure-g">
 
-  <div id="navigation-wrapper" class="pure-u-1 pure-u-sm-1 pure-u-md-4-24 navigation">
-    <div class="pureCSS" style="padding: 10px;"></div> <!-- /pureCSS Dev -->
-    <div id="navigation">
-      <div id="nav-header">
+  <div class="pure-u-1 pure-u-sm-1 pure-u-md-4-24">
 
-        <?php if ($logo): ?>
-          <div id="logo-wrapper" class="center-nav">
-            <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
-              <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
-            </a>
-          </div>
-        <?php endif; ?>
+    This is the navigation area
 
-        <?php if ($secondary_menu): ?>
-          <div id="secondary-menu" class="navigation">
-            <?php print theme('links__system_secondary_menu', array(
-              'links' => $secondary_menu,
-              'attributes' => array(
-                'id' => 'secondary-menu-links',
-                'class' => array('links', 'inline', 'clearfix'),
-              ),
-              'heading' => array(
-                'text' => t('Secondary menu'),
-                'level' => 'h2',
-                'class' => array('element-invisible'),
-              ),
-            )); ?>
-          </div> <!-- /#secondary-menu -->
-        <?php endif; ?>
 
-      </div>
-
-      <?php if ($main_menu): ?>
-        <div id="nav-menu">
-          <?php print theme('links__system_main_menu', array(
-            'links' => $main_menu,
-            'attributes' => array(
-              'id' => 'main-menu-links',
-              'class' => array('nav-list', 'clearfix'),
-            ),
-            'heading' => array(
-              'text' => t('Main menu'),
-              'level' => 'h2',
-              'class' => array('element-invisible'),
-            ),
-          )); ?>
-        </div> <!-- /#main-menu -->
-      <?php endif; ?>
-
-    </div>
   </div>
 
 
-  <div id="page" class="pure-u-1 pure-u-sm-1 pure-u-md-20-24 navigation">
+  <div class="pure-u-1 pure-u-sm-1 pure-u-md-20-24" style="background-color: blue">
 
-    <div id="main" class="pure-g clearfix">
-      <div id="sidebar" class="pure-u-1 pure-u-sm-1 pure-u-md-1 pure-u-lg-1-3">
+    <div class="pure-g ">
+      <div class="pure-u-1 pure-u-sm-1 pure-u-md-1 pure-u-lg-1-3" style="background-color: red; height: 100%;">
 
-        <?php if ($page['sidebar_left']): ?>
-          <div id="sidebar-left" class="column sidebar">
-              <?php print render($page['sidebar_left']); ?>
-            </div> <!-- /.section, /#sidebar-first -->
-        <?php endif; ?>
+        Here goes the sidebar
 
       </div>
 
 
-      <div id="main-content" class="pure-u-1 pure-u-sm-1 pure-u-md-1 pure-u-lg-2-3">
+      <div class="pure-u-1 pure-u-sm-1 pure-u-md-1 pure-u-lg-2-3" style="background-color: yellow; height: 100%;">
 
-        <?php if ($messages): ?>
-          <div id="messages"><div class="section clearfix">
-              <?php print $messages; ?>
-            </div></div> <!-- /.section, /#messages -->
-        <?php endif; ?>
-
-
-        <?php if ($page['highlighted']): ?><div id="highlighted"><?php print render($page['highlighted']); ?></div><?php endif; ?>
-        <?php print render($title_prefix); ?>
-        <?php if ($title): ?>
-          <h1 class="title" id="page-title">
-            <?php print $title; ?>
-          </h1>
-        <?php endif; ?>
-        <?php print render($title_suffix); ?>
-        <?php if ($tabs): ?>
-          <div class="tabs">
-            <?php print render($tabs); ?>
-          </div>
-        <?php endif; ?>
-        <?php print render($page['help']); ?>
-        <?php if ($action_links): ?>
-          <ul class="action-links">
-            <?php print render($action_links); ?>
-          </ul>
-        <?php endif; ?>
-        <?php print render($page['content']); ?>
-        <?php print $feed_icons; ?>
+        And main content here
 
 
       </div>
