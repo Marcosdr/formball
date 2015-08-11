@@ -1,0 +1,5 @@
+name = Formball logo
+description = A logo made entirely of markup
+package = Formball
+core = 7.x
+files[] = formball_logo.module

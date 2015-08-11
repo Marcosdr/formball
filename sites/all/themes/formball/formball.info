@@ -5,6 +5,7 @@ core = 7.x
 base theme = stark
 
 stylesheets[all][] = assets/css/formball-styles.css
+stylesheets[all][] = assets/css/logo.css
 stylesheets[all][] = assets/css/base.css
 stylesheets[all][] = assets/css/pure-sm.css
 stylesheets[all][] = assets/css/pure-md.css

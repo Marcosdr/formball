@@ -1,0 +1,106 @@
+<?php
+
+/**
+ * @file
+ * Formball logo
+ */
+
+/**
+ * Logo Markup
+ */
+
+
+/**
+ * Implements hook_menu()
+ */
+
+function formball_logo_menu(){
+  $items['logo'] = array (
+    'title' => 'Formball Logo',
+    'description' => 'logo made of markup',
+    'page callback' => 'formball_logo',
+    'access callback' => TRUE,
+  );
+  return $items;
+}
+
+function formball_logo() {
+
+  $logo_markup = '
+     <div class="logo-grid-container">
+        <div class="logo-row">
+            <div class="logo-box">
+                <div class="logo-unit-1-1"></div>
+            </div>
+            <div class="logo-box">
+                <div class="logo-unit-1-2"></div>
+            </div>
+            <div class="logo-box">
+                <div class="logo-unit-1-3">
+                    <div class="logo-triangle"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="logo-row">
+            <div class="logo-box">
+                <div class="logo-unit-2-1"></div>
+            </div>
+            <div class="logo-box">
+                <div class="logo-unit-2-2"></div>
+            </div>
+            <div class="box">
+                <div class="logo-unit-2-3"></div>
+            </div>
+        </div>
+
+        <div class="logo-row">
+            <div class="logo-box">
+                <div class="logo-unit-3-1"></div>
+            </div>
+            <div class="logo-box">
+                <div class="logo-unit-3-2"></div>
+            </div>
+            <div class="logo-box">
+                <div class="logo-unit-3-3">
+                    <div class="logo-triangle"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="logo-row">
+            <div class="logo-box">
+                <div class="logo-unit-4-1"></div>
+            </div>
+            <div class="logo-box">
+                <div class="logo-unit-4-2"></div>
+            </div>
+            <div class="logo-box">
+                <div class="logo-unit-4-3"></div>
+            </div>
+        </div>
+
+        <div class="logo-row">
+            <div class="logo-box">
+                <div class="logo-unit-5-1"></div>
+            </div>
+            <div class="logo-box">
+                <div class="logo-unit-5-2"></div>
+            </div>
+            <div class="logo-box">
+                <div class="logo-unit-5-3"></div>
+            </div>
+        </div>
+
+    </div>
+  ';
+
+  $build = array(
+    'logo markup' => array(
+      '#type' => 'markup',
+      '#markup' => $logo_markup,
+    ),
+  );
+  return $build;
+}
+
