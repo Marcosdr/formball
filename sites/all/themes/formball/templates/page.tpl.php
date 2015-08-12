@@ -92,7 +92,14 @@
     <div id="navigation">
       <div id="nav-header">
 
-        <?php if ($logo): ?>
+        <?php if ($page['navigation']['formball_logo_formball_logo']): ?>
+        <div id="formball-nav-logo-wrapper" class="center-nav">
+          <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
+            <?php print render($page['navigation']['formball_logo_formball_logo']); ?>
+          </a>
+        </div>
+
+        <?php elseif ($logo): ?>
           <div id="logo-wrapper" class="center-nav">
             <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
               <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
@@ -134,6 +141,12 @@
             ),
           )); ?>
         </div> <!-- /#main-menu -->
+      <?php endif; ?>
+
+      <?php if ($page['navigation']): ?>
+        <div id="navigation-blocks" class="nav-width">
+          <?php print render($page['navigation']); ?>
+        </div> <!-- /#navigation-blocks -->
       <?php endif; ?>
 
     </div>

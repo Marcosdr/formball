@@ -6,25 +6,33 @@
  */
 
 /**
- * Logo Markup
+ * Implements hook_block_info()
  */
+
+function formball_logo_block_info(){
+  $blocks['formball_logo'] = array (
+    'info' => t('Formball Logo'),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view()
+ */
+
+function formball_logo_block_view($delta = '') {
+  $block = array();
+  $block['subject'] = t('Formball Logo');
+  $block['content'] = formball_logo_markup();
+  return $block;
+}
 
 
 /**
- * Implements hook_menu()
+ * Logo Markup
  */
 
-function formball_logo_menu(){
-  $items['logo'] = array (
-    'title' => 'Formball Logo',
-    'description' => 'logo made of markup',
-    'page callback' => 'formball_logo',
-    'access callback' => TRUE,
-  );
-  return $items;
-}
-
-function formball_logo() {
+function formball_logo_markup() {
 
   $logo_markup = '
      <div class="logo-grid-container">
