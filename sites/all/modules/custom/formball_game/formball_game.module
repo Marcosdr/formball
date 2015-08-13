@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Formball page and game elements
+ */
+
+/**
+ * Implements hook_menu()
+ */
+
+function formball_game_menu() {
+  $items['game'] = array(
+    'title' => 'Formball Game',
+    'description' => 'Page and elements of the game',
+    'page callback' => 'formball_game_elements',
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+
+function formball_game_elements() {
+  $build = array(
+    '#type' => 'markup',
+    '#markup' => 'Here goes the game elements',
+  );
+  return $build;
+}

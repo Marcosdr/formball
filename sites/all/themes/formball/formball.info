@@ -10,6 +10,7 @@ stylesheets[all][] = assets/css/base.css
 stylesheets[all][] = assets/css/pure-sm.css
 stylesheets[all][] = assets/css/pure-md.css
 stylesheets[all][] = assets/css/pure-lg.css
+stylesheets[all][] = assets/css/game.css
 
 
 regions[navigation] = Navigation
