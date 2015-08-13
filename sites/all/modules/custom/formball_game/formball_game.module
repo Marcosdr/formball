@@ -22,8 +22,50 @@ function formball_game_menu() {
 
 function formball_game_elements() {
   $build = array(
-    '#type' => 'markup',
-    '#markup' => 'Here goes the game elements',
+    'header' => array(
+      '#type' => 'markup',
+      '#markup' => 'Here goes the game elements',
+    ),
+    'game_table' => drupal_get_form('game_elements_form'),
   );
   return $build;
+}
+
+function game_elements_form ($form, &$form_submit) {
+
+  $player_1 = array (
+    '01' => '01',
+    '02' => '02',
+    '03' => '03',
+    '04' => '',
+    '05' => '05',
+  );
+
+  $player_2 = array (
+    '01' => '01',
+    '02' => '02',
+    '03' => '03',
+    '04' => '',
+    '05' => '05',
+  );
+
+  $form['player_1_position'] = array(
+    '#title' => 'checkboxes array',
+    '#type' => 'checkboxes',
+    '#options' => $player_1,
+  );
+
+  $form['player_2_position'] = array(
+    '#title' => 'checkboxes array',
+    '#type' => 'checkboxes',
+    '#options' => $player_2,
+  );
+
+  $form['position_01'] = array(
+    '#title' => 'single checkbox',
+    '#type' => 'checkbox',
+  );
+
+
+  return $form;
 }
