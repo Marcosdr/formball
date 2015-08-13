@@ -33,39 +33,41 @@ function formball_game_elements() {
 
 function game_elements_form ($form, &$form_submit) {
 
-  $player_1 = array (
-    '01' => '01',
-    '02' => '02',
-    '03' => '03',
-    '04' => '',
-    '05' => '05',
+  $options = array();
+
+  /* create checkboxes for player A and B */
+  $players = array('A', 'B');
+  foreach ($players as $player){
+    for ($i=0; $i<9; $i++) {
+      for($j=0; $j<9; $j++) {
+        $row = $i + 1;
+        $column = $j + 1;
+        $key = 'player_' . $player . '_' . $row . '_' . $column;
+        $form[$key] = array(
+          '#title' => '',
+          '#type' => 'checkbox',
+        );
+
+      }
+    }
+  }
+
+  /* create ball positions on the field */
+
+  for ($i=0; $i<9; $i++) {
+    for ($j = 0; $j < 9; $j++) {
+      $options[] = 0; /* CONTINUE HERE */
+    }
+  }
+
+  $form['ball'] = array(
+    '#title' => '',
+    '#type' => 'radios',
+    '#default_value' => variable_get('comment_preview', 1),
+    '#options' => drupal_map_assoc(range(1,18)),
+      '#attributes' => array(
+        'class' => array(),
+      ),
   );
-
-  $player_2 = array (
-    '01' => '01',
-    '02' => '02',
-    '03' => '03',
-    '04' => '',
-    '05' => '05',
-  );
-
-  $form['player_1_position'] = array(
-    '#title' => 'checkboxes array',
-    '#type' => 'checkboxes',
-    '#options' => $player_1,
-  );
-
-  $form['player_2_position'] = array(
-    '#title' => 'checkboxes array',
-    '#type' => 'checkboxes',
-    '#options' => $player_2,
-  );
-
-  $form['position_01'] = array(
-    '#title' => 'single checkbox',
-    '#type' => 'checkbox',
-  );
-
-
   return $form;
 }
