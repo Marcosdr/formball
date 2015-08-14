@@ -54,20 +54,29 @@ function game_elements_form ($form, &$form_submit) {
 
   /* create ball positions on the field */
 
-  for ($i=0; $i<9; $i++) {
-    for ($j = 0; $j < 9; $j++) {
-      $options[] = 0; /* CONTINUE HERE */
-    }
-  }
-
   $form['ball'] = array(
     '#title' => '',
     '#type' => 'radios',
     '#default_value' => variable_get('comment_preview', 1),
     '#options' => drupal_map_assoc(range(1,18)),
-      '#attributes' => array(
-        'class' => array(),
-      ),
+    /* '#attributes' => array(
+      'class' => array(),
+    ), */
   );
   return $form;
+}
+
+/**
+ * Implements hook_theme()
+ * Point to the theme for the game elements
+ */
+
+function formball_game_theme ($existing, $type, $theme, $path){
+  $module_path = drupal_get_path('module', 'formball_game');
+  $items['game_elements_form'] = array (
+    'render element' => 'form',
+    'template' => 'game',
+    'path' => $module_path . '/theme',
+  );
+  return $items;
 }
