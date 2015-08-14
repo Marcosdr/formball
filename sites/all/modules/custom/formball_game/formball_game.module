@@ -6,17 +6,29 @@
  */
 
 /**
+ * Implements hook_preprocess_page()
+ * Adds the game.css stylesheet
+ * @param $variables
+ */
+
+function formball_game_preprocess_page(&$variables) {
+  $module_path = drupal_get_path('module', 'formball_game');
+  drupal_add_css( $module_path . '/css/game.css', array(
+    'group' => CSS_THEME,
+  ));
+}
+
+/**
  * Implements hook_menu()
  */
 
 function formball_game_menu() {
   $items['game'] = array(
-    'title' => 'Formball Game',
+    'title' => 'Title',
     'description' => 'Page and elements of the game',
     'page callback' => 'formball_game_elements',
     'access callback' => TRUE,
   );
-
   return $items;
 }
 
@@ -33,21 +45,34 @@ function formball_game_elements() {
 
 function game_elements_form ($form, &$form_submit) {
 
-  $options = array();
+  $options = array(); /* continue here */
 
   /* create checkboxes for player A and B */
   $players = array('A', 'B');
   foreach ($players as $player){
     for ($i=0; $i<9; $i++) {
-      for($j=0; $j<9; $j++) {
+      for($j=0; $j<5; $j++) {
         $row = $i + 1;
         $column = $j + 1;
         $key = 'player_' . $player . '_' . $row . '_' . $column;
+        if($i % 2 == 1 ) {
+          $pos_offset = $j * 25 + 12.5; /* $column * 30 + 15 */
+          if ($j == 4) break;
+        }
+        else $pos_offset = $j * 25; /* $column * 30 */
+
         $form[$key] = array(
           '#title' => '',
           '#type' => 'checkbox',
+          '#attributes' => array(
+            'class' => array($key),
+            'style' => array(
+              'position: absolute;',
+              'top: ' . $i * 12.5 . '%;',
+              'left: '. $pos_offset . '%;',
+            ),
+          ),
         );
-
       }
     }
   }
@@ -66,6 +91,7 @@ function game_elements_form ($form, &$form_submit) {
   return $form;
 }
 
+
 /**
  * Implements hook_theme()
  * Point to the theme for the game elements
@@ -80,3 +106,4 @@ function formball_game_theme ($existing, $type, $theme, $path){
   );
   return $items;
 }
+

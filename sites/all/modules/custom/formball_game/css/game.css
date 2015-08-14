@@ -1,0 +1,18 @@
+/**
+ *------------------------------------------------------
+ *  Game board styles
+ *------------------------------------------------------
+ */
+
+#game-wrapper {
+  width:600px;
+  height: 400px;
+  background-color: green;
+}
+  #game {
+    margin: auto;
+    position: relative;
+    width: 90%;
+    height: 90%;
+    top: 5%;
+  }

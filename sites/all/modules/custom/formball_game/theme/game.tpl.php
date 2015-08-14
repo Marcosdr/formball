@@ -1,25 +1,21 @@
 <?php
-  print kpr($form["player_A_1_1"]);
 ?>
 
 <div id="game-wrapper">
-  <div class="game" style="position: relative; width:600px; height: 400px; background-color: green;">
-    <div class="elements" style="position: absolute;">
+  <div id="game">
+    <div class="elements">
       <?php
       for ($i=0; $i<9; $i++) {
-        for($j=0; $j<9; $j++) {
+        for($j=0; $j<5; $j++) {
           $row = $i + 1;
           $column = $j + 1;
-          ?>
-          <div class="player_A_<?php print $i ?>_<?php print $j ?>">
-          <?php
-            //print render($form["player_A_{$i}_{$j}"]);
-          ?>
-          </div> <?php
-
+          $player_position = "player_A_{$row}_{$column}";
+          if($i % 2 == 1 && $j == 4) break;
+          if($form[$player_position]) {
+            print render($form[$player_position]);
+          } else print ('Missing Player position');
         }
       }
-
       ?>
     </div>
   </div>
