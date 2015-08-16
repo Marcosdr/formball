@@ -8,20 +8,20 @@
  *------------------------------------------------------
  *  Colors
  *------------------------------------------------------
- *
- *
- *  #252a3a: Dark blue (Navigation)
- *  #1b98f8: Light blue (Links, Button & featured ticket)
- *  #4b7197: Blue (Navigation Labels)
- *  #ffc94c: Yellow
- *  #41ccb4: Cyan
- *  #40c365: Green
- *  #eeeeee: Light Grey (Sidebar background)
- *  #dddddd: Grey (Sidebar lines)
- *  #999999: Tan (Info text)
- *  #333333: Black (Text)
- *
  */
+
+ .colors {
+   color: #252a3a; /* Dark blue (Navigation) */
+   color: #1b98f8; /* Light blue (Links, Button & featured ticket) */
+   color: #4b7197; /* Blue (Navigation Labels) */
+   color: #ffc94c; /* Yellow */
+   color: #41ccb4; /* Cyan */
+   color: #40c365; /* Green */
+   color: #eeeeee; /* Light Grey (Sidebar background) */
+   color: #dddddd; /* Grey (Sidebar lines) */
+   color: #999999; /* Tan (Info text) */
+   color: #333333; /* Black (Text) */
+ }
 
 /**
  *------------------------------------------------------

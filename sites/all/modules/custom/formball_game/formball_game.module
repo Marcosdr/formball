@@ -45,32 +45,25 @@ function formball_game_elements() {
 
 function game_elements_form ($form, &$form_submit) {
 
-  $options = array(); /* continue here */
+  $options = array(); /* balls array, TODO continue here */
 
-  /* create checkboxes for player A and B */
+  /* create array for players checkboxes */
   $players = array('A', 'B');
+
+  /* Logic to create form with appropriate checkboxes and its positions on table */
   foreach ($players as $player){
     for ($i=0; $i<9; $i++) {
       for($j=0; $j<5; $j++) {
         $row = $i + 1;
         $column = $j + 1;
         $key = 'player_' . $player . '_' . $row . '_' . $column;
-        if($i % 2 == 1 ) {
-          $pos_offset = $j * 25 + 12.5; /* $column * 30 + 15 */
-          if ($j == 4) break;
-        }
-        else $pos_offset = $j * 25; /* $column * 30 */
-
+        // create 4 checkboxes on even rows, 5 on odd
+        if($i % 2 == 1 && $j == 4) break;
         $form[$key] = array(
           '#title' => '',
           '#type' => 'checkbox',
           '#attributes' => array(
-            'class' => array($key),
-            'style' => array(
-              'position: absolute;',
-              'top: ' . $i * 12.5 . '%;',
-              'left: '. $pos_offset . '%;',
-            ),
+            'class' => array('input-' . $key, 'form-checkbox'),
           ),
         );
       }
