@@ -9,26 +9,55 @@
   color: #009400; /* Player A Dark */
   color: #bf0000; /* Player B */
   color: #940000; /* Player B Dark */
+  color: #ffc94c; /* Border lines colors */
 }
 
 #game-wrapper{
   width:600px;
   height: 400px;
+  position: relative;
 }
-
-#game-board {
-  background-color: green;
-  width: 100%;
-  height: 100%;
-}
-  #game-elements {
-    margin: auto;
+  #game-board {
+    background-color: green;
+    width: 100%;
+    height: 100%;
+    border: 4px solid #ffc94c;
     position: relative;
-    width: 80%;
-    height: 80%;
-    top: 6%;
-    right: 5%;
+    box-sizing: border-box;
   }
+  #game-board::before {
+    content: " ";
+    display: block;
+    border: 4px solid #FFC94C;
+    height: 100%;
+    width: 50%;
+    bottom: -1%;
+    left: -1%;
+    position: absolute;
+  }
+  #game-wrapper::after, #game-board::after {
+    content: " ";
+    display: block;
+    border: 4px solid #FFC94C;
+    height: 24%;
+    width: 9%;
+    bottom: 38%;
+    position: absolute;
+  }
+  #game-wrapper::after {
+    right: 0%;
+  }
+  #game-board::after {
+    left: -1%;
+  }
+    #game-elements {
+      margin: auto;
+      position: relative;
+      width: 80%;
+      height: 80%;
+      top: 6%;
+      right: 5%;
+    }
 
 /* References */
 /* http://jsfiddle.net/a879W/ - Div positioning */
@@ -115,3 +144,16 @@ input[type=checkbox] {
   opacity: 1;
 }
 
+/* place the goalkeepers in correct position */
+.player_A_5_1 {
+  left: -3% !important;
+}
+
+.player_B_5_5 {
+  left: 111% !important;
+}
+
+/* hide extra players in goalkeeping area */
+.player_B_5_1, .player_A_5_5 {
+  display: none;
+}
