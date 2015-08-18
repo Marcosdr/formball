@@ -1,5 +1,5 @@
 <?php
-  //kpr($form['player_A_1_1']);
+  //kpr($form['ball']);
 ?>
 
 <div id="game-wrapper">
@@ -53,9 +53,56 @@
             else {
               print ('Missing Player position');
             }
+
           }
         }
       }
+
+      /* Render the ball positions */
+
+      //print render($form['ball']);
+
+      /* Render the ball positions */
+      /* doing it here to avoid extra for loops */
+
+      /* variables that control checkbox positions*/
+      $column_pos = 25;
+      $row_pos = 12.5;
+      $offset_pair_row = 12.4;
+      $offset_ball_pos = 5;
+
+      for ($i = 0; $i < 9; $i++) {
+        for ($j = 0; $j < 5; $j++) {
+          $row = $i + 1;
+          $column = $j + 1;
+          if ($i % 2 == 1) {
+            $pos_offset = $j * $column_pos + $offset_pair_row + $offset_ball_pos;
+            if ($j == 4) break;
+          }
+          else {
+            $pos_offset = $j * $column_pos + $offset_ball_pos;
+          }
+
+          $ball_position = "ball_{$row}_{$column}";
+          static $ball_id_num = 1;
+          print '
+            <div class="' . $ball_position . '" style="
+                  position: absolute;
+                  top: ' . $i * $row_pos . '%;
+                  left: '. $pos_offset . '%;">' .
+
+              '<input id="' . $form['ball'][$ball_position]['#id'] .
+              '" type="' . $form['ball'][$ball_position]['#type'] .
+              '" value="' . $form['ball'][$ball_position]['#value'] .
+              '" name="' . $form['ball'][$ball_position]['#name'] .
+              '"></input>' .
+              '<label for="' . $form['ball'][$ball_position]['#id'] . '"></label>' .
+
+            '</div>';
+        }
+      }
+
+
       ?>
     </div>
   </div>
