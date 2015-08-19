@@ -16,6 +16,7 @@ function formball_game_preprocess_page(&$variables) {
   drupal_add_css( $module_path . '/css/game.css', array(
     'group' => CSS_THEME,
   ));
+  kpr($variables);
 }
 
 /**
@@ -23,6 +24,7 @@ function formball_game_preprocess_page(&$variables) {
  */
 
 function formball_game_menu() {
+  // Main game page
   $items['game'] = array(
     'title' => 'Title',
     'description' => 'Page and elements of the game',
@@ -30,6 +32,7 @@ function formball_game_menu() {
     'access callback' => TRUE,
   );
 
+  // setup the configuration page
   $items['admin/config/game'] = array(
     'title' => 'Formball',
     'description' => 'formball configuration',
