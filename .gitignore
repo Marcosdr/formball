@@ -10,3 +10,6 @@ sites/*/private
 
 # Ignore PHPStorm generated dummy files
 *.idea
+
+# ignore local settings.php
+sites/formball_loc.dd/default.settings.php
