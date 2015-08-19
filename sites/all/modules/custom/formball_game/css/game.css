@@ -64,7 +64,7 @@
 /* http://cssdeck.com/labs/css-checkbox-styles */
 
 /* Player Checkbox */
-input[type=checkbox] {
+#game-elements input[type=checkbox] {
   visibility: hidden;
 }
 

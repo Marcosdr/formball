@@ -26,24 +26,34 @@ function formball_game_menu() {
   $items['game'] = array(
     'title' => 'Title',
     'description' => 'Page and elements of the game',
-    'page callback' => 'formball_game_elements',
+    'page callback' => 'formball_game_board',
     'access callback' => TRUE,
+  );
+
+  $items['admin/config/game'] = array(
+    'title' => 'Formball',
+    'description' => 'formball configuration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('formball_game_admin_settings'),
+    'access callback' => TRUE,
+    'file' => 'formball_game.admin.inc',
+    'file path' => drupal_get_path('module', 'formball_game'),
   );
   return $items;
 }
 
-function formball_game_elements() {
+function formball_game_board() {
   $build = array(
     'header' => array(
       '#type' => 'markup',
       '#markup' => 'Here goes the game elements',
     ),
-    'game_table' => drupal_get_form('game_elements_form'),
+    'game_table' => drupal_get_form('game_board_form'),
   );
   return $build;
 }
 
-function game_elements_form ($form, &$form_submit) {
+function game_board_form ($form, &$form_submit) {
 
   /* create array for players checkboxes */
   $players = array('A', 'B');
@@ -95,7 +105,7 @@ function game_elements_form ($form, &$form_submit) {
 
 function formball_game_theme ($existing, $type, $theme, $path){
   $module_path = drupal_get_path('module', 'formball_game');
-  $items['game_elements_form'] = array (
+  $items['game_board_form'] = array (
     'render element' => 'form',
     'template' => 'game',
     'path' => $module_path . '/theme',
