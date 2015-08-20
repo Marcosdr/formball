@@ -16,7 +16,6 @@ function formball_game_preprocess_page(&$variables) {
   drupal_add_css( $module_path . '/css/game.css', array(
     'group' => CSS_THEME,
   ));
-  kpr($variables);
 }
 
 /**

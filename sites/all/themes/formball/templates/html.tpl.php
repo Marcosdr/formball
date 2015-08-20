@@ -72,9 +72,9 @@
   <!--[if gt IE 8]><!-->
   <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
   <!--<![endif]-->
-  <?php
-    // print ('<meta http-equiv="refresh" content="5; URL=http://formball.dd:8083/">');
-  ?>
+  <?php if($formball_refresh_page): ?>
+    <meta http-equiv="refresh" content="<?php print $formball_refresh_rate ?>; URL=http://formball.dd:8083/">
+  <?php endif; ?>
 
   <?php print $styles; ?>
   <?php print $scripts; ?>

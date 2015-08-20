@@ -12,14 +12,14 @@ function formball_game_admin_settings() {
   $form['formball_game_refresh'] = array(
     '#type' => 'checkbox',
     '#title' => t('Automatic page refresh'),
-    //'#default_value' => 1,
+    '#default_value' => variable_get('formball_game_refresh', 0),
     '#description' => t('This will enable or disable page refresh every defined period of time'),
   );
 
   $form['formball_game_refresh_time'] = array(
     '#type' => 'textfield',
     '#title' => t('Refresh time'),
-    '#default_value' => 5,
+    '#default_value' => variable_get('formball_game_refresh_time', 0),
     '#size' => 5,
     '#maxlength' => 5,
     '#description' => t('Determine the ammount of time in seconds to refresh the page automatically')

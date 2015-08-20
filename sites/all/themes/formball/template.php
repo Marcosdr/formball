@@ -94,3 +94,14 @@ function formball_links($variables) {
   return $output;
 }
 
+/**
+ * Implements hook_preprocess_html()
+ * enables or disables the refresh feature on the game page
+ */
+
+function formball_game_preprocess_html(&$variables) {
+  if(module_exists('formball_game')) {
+    $variables['formball_refresh_page'] = variable_get('formball_game_refresh', 0);
+    $variables['formball_refresh_rate'] = variable_get('formball_game_refresh_time', 0);
+  }
+}
