@@ -1,11 +1,12 @@
 <?php
-  //kpr($form['ball']);
+  //kpr($form);
 ?>
 
 <div id="game-wrapper">
   <div id="game-board">
     <div id="game-elements">
       <?php
+
       /* create array for players checkboxes */
       $players = array('A', 'B');
 
@@ -101,9 +102,12 @@
             '</div>';
         }
       }
+      print ('<div style="position:relative;">');
 
+      print ('</div>');
 
       ?>
     </div>
   </div>
+  <?php print render($form['submit']); ?>
 </div>

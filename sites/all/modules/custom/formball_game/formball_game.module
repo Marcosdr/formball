@@ -55,8 +55,16 @@ function formball_game_board() {
   return $build;
 }
 
-function game_board_form ($form, &$form_submit) {
+/**
+ * Form containing the game board and elements
+ *
+ * @param $form
+ * @param $form_submit
+ * @return mixed
+ */
 
+function game_board_form ($form, &$form_submit) {
+  kpr($form_submit);
   /* create array for players checkboxes */
   $players = array('A', 'B');
 
@@ -96,7 +104,29 @@ function game_board_form ($form, &$form_submit) {
     '#default_value' => variable_get('comment_preview', 1),
     '#options' => $options,
   ];
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Submit',
+  );
+
   return $form;
+}
+
+/**
+ * Validation for game_board_form()
+ */
+
+function game_board_form_validate($form, &$form_state) {
+  // validation criterias here
+}
+
+/**
+ * Submit function for game_board_form()
+ */
+
+function game_board_form_submit($form, &$form_state) {
+  // Display messages here
 }
 
 
