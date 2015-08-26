@@ -50,7 +50,7 @@ function formball_game_board() {
       '#type' => 'markup',
       '#markup' => 'Here goes the game elements',
     ),
-    'game_table' => drupal_get_form('game_board_form'),
+    'game_table' => drupal_get_form('formball_game_form'),
   );
   return $build;
 }
@@ -63,8 +63,9 @@ function formball_game_board() {
  * @return mixed
  */
 
-function game_board_form ($form, &$form_submit) {
-  kpr($form_submit);
+function formball_game_form($form, &$form_state) {
+
+  //kpr($form_state);
   /* create array for players checkboxes */
   $players = array('A', 'B');
 
@@ -101,7 +102,6 @@ function game_board_form ($form, &$form_submit) {
   $form['ball'] = [
     '#title' => '',
     '#type' => 'radios',
-    '#default_value' => variable_get('comment_preview', 1),
     '#options' => $options,
   ];
 
@@ -117,27 +117,26 @@ function game_board_form ($form, &$form_submit) {
  * Validation for game_board_form()
  */
 
-function game_board_form_validate($form, &$form_state) {
+function formball_game_form_validate($form, &$form_state) {
   // validation criterias here
 }
+
 
 /**
  * Submit function for game_board_form()
  */
-
-function game_board_form_submit($form, &$form_state) {
+function formball_game_form_submit($form, &$form_state) {
   // Display messages here
+  drupal_set_message('hi there');
 }
-
 
 /**
  * Implements hook_theme()
  * Point to the theme for the game elements
  */
-
-function formball_game_theme ($existing, $type, $theme, $path){
+function formball_game_theme($existing, $type, $theme, $path){
   $module_path = drupal_get_path('module', 'formball_game');
-  $items['game_board_form'] = array (
+  $items['formball_game_form'] = array (
     'render element' => 'form',
     'template' => 'game',
     'path' => $module_path . '/theme',
