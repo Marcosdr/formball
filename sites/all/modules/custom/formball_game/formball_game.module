@@ -16,6 +16,11 @@ function formball_game_preprocess_page(&$variables) {
   drupal_add_css( $module_path . '/css/game.css', array(
     'group' => CSS_THEME,
   ));
+  drupal_add_js($module_path . '/js/game_loop.js');
+  $settings['autorefresh'] = variable_get('formball_game_refresh', 0);
+  $settings['autorefresh_time'] = variable_get('formball_game_refresh_time', 0);
+  drupal_add_js(array('formball_refresh' => $settings), 'setting');
+  $variables['scripts'] = drupal_get_js();
 }
 
 /**
