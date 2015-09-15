@@ -58,7 +58,7 @@ function formball_game_schema() {
         'not null' => FALSE,
       ),
       'player' => array(
-        'description' => 'Player assignment A or B',
+        'description' => 'Player assignment (A or B)',
         'type' => 'char',
         'length' => '1',
         'not null' => FALSE,
