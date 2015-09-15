@@ -23,6 +23,9 @@ function formball_game_page() {
 function formball_game_form($form, &$form_state) {
 
   //kpr($form_state);
+  $session_id = session_id();
+  $player_id = substr($session_id, 0, 7);
+
 
   // Grab or set the variable that stores the players moves
   $player_moves = variable_get('player_moves', array());

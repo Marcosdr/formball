@@ -17,39 +17,10 @@
           document.forms["formball-game-form"].submit();
         }
       }
-
-      //window.setInterval(function(){ submitform(); }, 3000);
-      //
-      //
-      //function submitform(){
-      //  //alert('test');
-      //  //document.forms["formball-game-form"].submit();
-      //  document.getElementById("formball-game-form").submit();
-      //
-      //}
-
-      //function autoRefresh(){
-      //  clearTimeout(auto);
-      //  auto = setTimeout(function(){ submitform(); autoRefresh(); }, 10000);
-      //}
-
-      //var auto = setTimeout(function(){ autoRefresh(); }, 100);
-      //
-      //function submitform(){
-      //  //alert('test');
-      //  document.forms["formball-game-form"].submit();
-      //}
-      //
-      //function autoRefresh(){
-      //  clearTimeout(auto);
-      //  auto = setTimeout(function(){ submitform(); autoRefresh(); }, 10000);
-      //}
-
-      //alert("Hello");
-      //setInterval(function(){ alert("Hello"); }, 3000);
     }
   }
 })(jQuery);
+
 
 /* IKOS WAY
 (function ($) {
