@@ -52,6 +52,17 @@ function formball_game_schema() {
         'type' => 'int',
         'not null' => FALSE,
       ),
+      'path' => array(
+        'description' => 'path to the game',
+        'type' => 'text',
+        'not null' => FALSE,
+      ),
+      'player' => array(
+        'description' => 'Player assignment A or B',
+        'type' => 'char',
+        'length' => '1',
+        'not null' => FALSE,
+      ),
     ),
     'primary key' => array('id'),
   );
