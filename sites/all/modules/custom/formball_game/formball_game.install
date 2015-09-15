@@ -12,7 +12,7 @@ function formball_game_install() {
 }
 
 function formball_game_uninstall() {
-
+  drupal_uninstall_schema('formball_games');
 }
 
 /**
@@ -21,39 +21,39 @@ function formball_game_uninstall() {
 
 function formball_game_schema() {
   $schema['formball_games'] = array(
-    'description' => 'TODO: please describe this table!',
+    'description' => 'Storage for formball searched games',
     'fields' => array(
-      'gid' => array(
-        'description' => 'TODO: please describe this field!',
+      'id' => array(
+        'description' => 'Unique game id',
         'type' => 'serial',
         'unsigned' => TRUE,
         'not null' => TRUE,
       ),
       'sid' => array(
-        'description' => 'TODO: please describe this field!',
+        'description' => 'Session id of user',
         'type' => 'varchar',
         'length' => '128',
         'not null' => FALSE,
       ),
       'uid' => array(
-        'description' => 'TODO: please describe this field!',
+        'description' => 'User id',
         'type' => 'int',
         'not null' => FALSE,
       ),
       'search_state' => array(
-        'description' => 'TODO: please describe this field!',
+        'description' => 'States wether the user is actively searching for a game',
         'type' => 'int',
         'size' => 'tiny',
         'not null' => FALSE,
+        'default' => 0,
       ),
       'timestamp' => array(
-        'description' => 'TODO: please describe this field!',
+        'description' => 'Time when the user hit the search game button',
         'type' => 'int',
         'not null' => FALSE,
       ),
     ),
-    'primary key' => array('gid'),
+    'primary key' => array('id'),
   );
-
   return $schema;
 }
