@@ -1,0 +1,19 @@
+
+/* General Theme Button */
+
+.btn {
+  padding: 10px;
+  background: red;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: 0;
+  /*cursor: pointer;*/
+  margin: 15px 0px;
+}
+  .btn a {
+    color: white;
+  }
+div.btn {
+  display: inline-block;
+}

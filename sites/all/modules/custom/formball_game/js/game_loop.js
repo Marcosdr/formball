@@ -6,7 +6,6 @@
 (function ($) {
   Drupal.behaviors.formball_game = {
     attach: function (context, settings) {
-
       // Autorefresh settings from the settings variables
       var $refresh = Drupal.settings.formball_refresh.autorefresh;
       var $refresh_time = Drupal.settings.formball_refresh.autorefresh_time * 1000;

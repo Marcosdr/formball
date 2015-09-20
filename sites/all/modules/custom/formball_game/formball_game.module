@@ -30,6 +30,7 @@ function formball_game_preprocess_page(&$variables) {
   $settings['autorefresh_time'] = variable_get('formball_game_refresh_time', 0);
   drupal_add_js(array('formball_refresh' => $settings), 'setting');
   $variables['scripts'] = drupal_get_js();
+  drupal_add_js($module_path . '/js/search_game.js');
 }
 
 /**
@@ -45,6 +46,16 @@ function formball_game_menu() {
     'page callback' => 'formball_search_game_page',
     'access callback' => TRUE,
     'file' => 'formball_search_game.page.inc',
+  );
+
+  // Search game ajax
+  $items['search-game/%'] = array(
+    'title' => 'Ajax search for games',
+    'page callback' => 'formball_search_game_ajax',
+    'page arguments' => array(1),
+    'access callback' => TRUE,
+    'file' => 'formball_search_game.page.inc',
+    'type' => MENU_CALLBACK,
   );
 
   // Main game page
