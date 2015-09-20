@@ -6,12 +6,11 @@
       // Function to search for a game, if it hasn't found any within X ammount of seconds
       // Then send a message for game not found
       // if it has, redirect players to the appropriate page
-      $.fn.search_game = function() {
-        $('.btn').hide();
-        setTimeout(function() {
-          $('#ajax-searching').fadeOut().html("").show();
-          $('.btn').fadeIn();
-        }, 3000)
+      $.fn.start_game = function(path) {
+        //alert(path);
+        //setTimeout(function() {
+        //
+        //}, 3000)
       }
 
     }};

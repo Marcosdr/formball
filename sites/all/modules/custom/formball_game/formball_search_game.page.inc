@@ -23,11 +23,13 @@ function formball_search_game_page() {
 
 function formball_search_game_ajax($ajax) {
   //database queries and processing
+  $match = FALSE;
   $my_game = create_new_game();
-  $opponent_game = search_for_game();
+  $opponent_game = search_for_game($my_game);
 
   if($my_game != NULL && $opponent_game != NULL) {
     set_match($my_game, $opponent_game);
+    $match = TRUE;
     $output = 'Game On! Player A: ' . $my_game->id . ' vs Player B: ' . $opponent_game->id;
   }
   else $output = 'No Players';
@@ -42,7 +44,11 @@ function formball_search_game_ajax($ajax) {
     $commands[] = ajax_command_changed('#ajax-searching');
 
     // Trigger our search_game JQuery plugin.
-    $commands[] = ajax_command_invoke(NULL, 'search_game');
+    if($match) {
+      if(verify_match_data($my_game, $opponent_game)) {
+        $commands[] = ajax_command_invoke(NULL, 'start_game', array($my_game->path));
+      }
+    }
 
     // You have to return a renderable array for the page and ajax callback
     ajax_deliver(array(
@@ -75,7 +81,7 @@ function create_new_game() {
       'sid' => user_is_logged_in() ? $user->sid : session_id(),
       'uid' => $user->uid,
       'search_state' => TRUE,
-      'timestamp' => REQUEST_TIME,
+      'timestamp' => $_SERVER['REQUEST_TIME_FLOAT'],
     ))
     ->execute();
 
@@ -94,7 +100,7 @@ function create_new_game() {
  * @return NULL/mixed
  */
 
-function search_for_game($condition = 'search_state', $value = TRUE) {
+function search_for_game($player = NULL, $condition = 'search_state', $value = TRUE) {
 
   $game = NULL;
   $condition_check = ":$condition";
@@ -111,6 +117,15 @@ function search_for_game($condition = 'search_state', $value = TRUE) {
 
   if(count($games) > 1 ) {
     $game = array_pop($games);
+    // Update each player's object and db with it's opponent data
+    $fields = array(
+      'opponent' => $game->sid,
+    );
+    update_game_field($player, $fields, 'sid', $player->sid);
+    $fields = array(
+      'opponent' => $player->sid,
+    );
+    update_game_field($game, $fields, 'sid', $game->sid);
   }
 
   return $game;
@@ -148,11 +163,13 @@ function search_game($condition = '', $value = '') {
 }
 
 /**
- * Set Game
+ * Set Match
  * Establishes players and game path to both the current user and his opponent
+ *
+ * @param null $player
+ * @param null $opponent
  */
-
-function set_match($player = NULL, $opponent = NULL) {
+function set_match(&$player = NULL, &$opponent = NULL) {
 
   if($player != NULL && $opponent != NULL ) {
     update_game($player, $opponent);
@@ -164,7 +181,7 @@ function set_match($player = NULL, $opponent = NULL) {
  * Updates the values inside the selected game
  */
 
-function update_game($player, $opponent) {
+function update_game(&$player, &$opponent) {
 
   $path = 'game';
   $path .= drupal_substr($player->sid, 0, 7);
@@ -178,21 +195,57 @@ function update_game($player, $opponent) {
     $opponent_type = 'A';
   }
 
+  // Update the player records
+  $fields = array(
+    'path' => $path,
+    'player' => $player_type,
+  );
+  update_game_field($player, $fields, 'sid', $player->sid);
+
+  // Update the opponent records
+  $fields = array(
+    'path' => $path,
+    'player' => $opponent_type,
+  );
+  update_game_field($opponent, $fields, 'sid', $opponent->sid);
+}
+
+
+/**
+ * Update a field or fields in the game db and object
+ *
+ * @param $player
+ * @param array $fields
+ * @param string $condition_key
+ * @param string $condition_value
+ */
+function update_game_field(&$player, $fields = array(), $condition_key = '', $condition_value = '') {
   db_update('formball_games')
-    ->fields(array(
-      'path' => $path,
-      'player' => $player_type,
-    ))
-    ->condition('sid', $player->sid)
+    ->fields($fields)
+    ->condition($condition_key, $condition_value)
     ->execute();
 
-  db_update('formball_games')
-    ->fields(array(
-      'path' => $path,
-      'player' => $opponent_type,
-    ))
-    ->condition('sid', $opponent->sid)
-    ->execute();
+  foreach($fields as $key => $value) {
+    $player->$key = $value;
+  }
+}
+
+/**
+ * Verify that the match data is correct before proceeding to the js code
+ * To redirect both players to the match
+ *
+ * @param null $player
+ * @param null $opponent
+ * @return bool
+ */
+function verify_match_data($player = NULL, $opponent = NULL){
+  $proceed = false;
+
+  if($player->opponent == $opponent->sid
+  && $opponent->opponent == $player->sid)
+    $proceed = true;
+
+  return $proceed;
 }
 
 /**

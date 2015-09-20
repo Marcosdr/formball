@@ -63,6 +63,12 @@ function formball_game_schema() {
         'length' => '1',
         'not null' => FALSE,
       ),
+      'opponent' => array(
+        'description' => 'Session id of user',
+        'type' => 'varchar',
+        'length' => '128',
+        'not null' => FALSE,
+      ),
     ),
     'primary key' => array('id'),
   );
