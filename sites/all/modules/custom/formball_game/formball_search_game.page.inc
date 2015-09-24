@@ -188,42 +188,48 @@ function search_for_game($player = NULL, $timeout = 0,  $condition = 'search_sta
 function set_match(&$player = NULL, &$opponent = NULL) {
 
   if($player != NULL && $opponent != NULL) {
-    update_game($player, $opponent);
+
+    // Check to see if the current player has it's values already set from the opponent
+    $path = search_game_field($player, 'path', 'sid', $player->sid);
+    if(!is_null($path)) {
+      $player_type = search_game_field($player, 'player', 'sid', $player->sid);
+      // If it has been updated, then update the player records
+      $fields = array(
+        'path' => $path,
+        'player' => $player_type,
+      );
+      update_game_field($player, $fields, 'sid', $player->sid);
+    }
+
+    // If the player doesn't have it's data updated, then update his and its opponent
+    else {
+      $path = 'game';
+      $path .= drupal_substr($player->sid, 0, 7);
+      $path .= drupal_substr($opponent->sid, 0, 7);
+      if($player->timestamp < $opponent->timestamp) {
+        $player_type = 'A';
+        $opponent_type = 'B';
+      }
+      else {
+        $player_type = 'B';
+        $opponent_type = 'A';
+      }
+
+      // Update the player records
+      $fields = array(
+        'path' => $path,
+        'player' => $player_type,
+      );
+      update_game_field($player, $fields, 'sid', $player->sid);
+
+      // Update the opponent records
+      $fields = array(
+        'path' => $path,
+        'player' => $opponent_type,
+      );
+      update_game_field($opponent, $fields, 'sid', $opponent->sid);
+    }
   }
-}
-
-/**
- * Update Game
- * Updates the values inside the selected game
- */
-
-function update_game(&$player, &$opponent) {
-
-  $path = 'game';
-  $path .= drupal_substr($player->sid, 0, 7);
-  $path .= drupal_substr($opponent->sid, 0, 7);
-  if($player->timestamp < $opponent->timestamp) {
-    $player_type = 'A';
-    $opponent_type = 'B';
-  }
-  else {
-    $player_type = 'B';
-    $opponent_type = 'A';
-  }
-
-  // Update the player records
-  $fields = array(
-    'path' => $path,
-    'player' => $player_type,
-  );
-  update_game_field($player, $fields, 'sid', $player->sid);
-
-  // Update the opponent records
-  $fields = array(
-    'path' => $path,
-    'player' => $opponent_type,
-  );
-  update_game_field($opponent, $fields, 'sid', $opponent->sid);
 }
 
 /**
