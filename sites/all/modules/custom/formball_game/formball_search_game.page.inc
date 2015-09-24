@@ -1,6 +1,9 @@
 <?php
 
-
+/**
+ * Function to create and ajax link in the search page to look for games
+ * @return array
+ */
 function formball_search_game_page() {
   $build = array(
     'header' => array(
@@ -21,12 +24,30 @@ function formball_search_game_page() {
   return $build;
 }
 
+/**
+ * Formball Search Game
+ *
+ * 1) Creates the current player game and inserts it into the db
+ * 2) Looks for an opponent in the database for a limited ammount of time
+ * 3) Sets the match data for both players
+ * 4) Verifies that everything is matching before moving forward
+ * 5) Redirects both players to the Game page
+ *
+ * @param $ajax
+ * @return array
+ */
 function formball_search_game_ajax($ajax) {
   //database queries and processing
   $match = FALSE;
-  $my_game = create_new_game();
-  $opponent_game = search_for_game($my_game);
 
+  // 1) Creates the current player game and inserts it into the db
+  $my_game = create_new_game();
+
+  // 2) Looks for an opponent in the database for a limited amount of time
+  $max_search_time = strtotime("+10 seconds"); // Defines the search time limit
+  $opponent_game = search_for_game($my_game, $max_search_time);
+
+  //3) Sets the match data for both players
   if($my_game != NULL && $opponent_game != NULL) {
     set_match($my_game, $opponent_game);
     $match = TRUE;
@@ -35,6 +56,7 @@ function formball_search_game_ajax($ajax) {
   else $output = 'No Players';
 
   if ($ajax == 'ajax') {
+
     $commands = array();
 
     // Ajax command to replace te 'ajax-searching' element with content
@@ -43,10 +65,17 @@ function formball_search_game_ajax($ajax) {
     // Add a visual "changed" marker to the '#ajax-searching' element.
     $commands[] = ajax_command_changed('#ajax-searching');
 
+    // 4) Verifies that everything is matching before moving forward
     // Trigger our search_game JQuery plugin.
     if($match) {
       if(verify_match_data($my_game, $opponent_game)) {
-        $commands[] = ajax_command_invoke(NULL, 'start_game', array($my_game->path));
+
+        // 5) Redirects both players to the Game page
+        //$commands[] = ajax_command_invoke(NULL, 'start_game', array($my_game->path));
+        $redirect_url = $my_game->path; // 'user'
+        ctools_include('ajax');
+        ctools_add_js('ajax-responder');
+        $commands[] = ctools_ajax_command_redirect($redirect_url);
       }
     }
 
@@ -92,6 +121,7 @@ function create_new_game() {
 }
 
 /**
+ * This is a recursive function
  * Searches for available games from the formball_games db
  * Grabs the game with the oldest timestamp
  *
@@ -100,7 +130,7 @@ function create_new_game() {
  * @return NULL/mixed
  */
 
-function search_for_game($player = NULL, $condition = 'search_state', $value = TRUE) {
+function search_for_game($player = NULL, $timeout = 0,  $condition = 'search_state', $value = TRUE) {
 
   $game = NULL;
   $condition_check = ":$condition";
@@ -115,7 +145,15 @@ function search_for_game($player = NULL, $condition = 'search_state', $value = T
     $games[] = $record;
   }
 
-  if(count($games) > 1 ) {
+  // Remove your own game from the results
+  foreach($games as $key => $game) {
+    if($player->sid == $game->sid) {
+      unset($games[$key]);
+    }
+  }
+
+  // if it finds an available game, then return it
+  if(count($games) > 0 ) {
     $game = array_pop($games);
     // Update each player's object and db with it's opponent data
     $fields = array(
@@ -126,40 +164,18 @@ function search_for_game($player = NULL, $condition = 'search_state', $value = T
       'opponent' => $player->sid,
     );
     update_game_field($game, $fields, 'sid', $game->sid);
+    return $game;
   }
 
-  return $game;
-}
-
-/**
- * Searches for a game from the formball_games db
- * given a condition and a value
- *
- * @param string $condition
- * @param bool|TRUE $value
- * @return NULL/mixed
- */
-
-function search_game($condition = '', $value = '') {
-
-  $game = NULL;
-  $condition_check = ":$condition";
-
-  // value may be 0 (!=) but condition cannot evaluate to 0 (!==)
-  if($condition !== '' && $value != ''){
-    $result = db_query_range("
-      SELECT * FROM {formball_games}
-      WHERE $condition = $condition_check
-      ORDER BY timestamp DESC", 0, 1, array($condition_check => $value)
-    );
-
-    // Fetch next row as a stdClass object.
-    if($result && $result->rowCount() > 0) {
-     $game = $result->fetchObject();
-    }
+  // If we have been searching for more than X amount of time, return NULL
+  // Which will indicate the player that there are no matches available
+  if ($timeout <= time()) {
+    return NULL;
   }
 
-  return $game;
+  // Wait for 2 seconds before calling the function again
+  sleep(2);
+  return search_for_game($player, $timeout, 'search_state', TRUE);
 }
 
 /**
@@ -171,7 +187,7 @@ function search_game($condition = '', $value = '') {
  */
 function set_match(&$player = NULL, &$opponent = NULL) {
 
-  if($player != NULL && $opponent != NULL ) {
+  if($player != NULL && $opponent != NULL) {
     update_game($player, $opponent);
   }
 }
@@ -210,6 +226,79 @@ function update_game(&$player, &$opponent) {
   update_game_field($opponent, $fields, 'sid', $opponent->sid);
 }
 
+/**
+ * Verify that the match data is correct before proceeding to the js code
+ * To redirect both players to the match
+ *
+ * @param null $player
+ * @param null $opponent
+ * @return bool
+ */
+function verify_match_data(&$player = NULL, &$opponent = NULL){
+  $proceed = false;
+
+  if($player->opponent == $opponent->sid
+  && $opponent->opponent == $player->sid) {
+    // Update the player and opponent search_state to false and proceed
+    $fields = array(
+      'search_state' => 1, // TODO change this to 0 after
+    );
+    update_game_field($player, $fields, 'sid', $player->sid);
+    update_game_field($opponent, $fields, 'sid', $opponent->sid);
+    $proceed = true;
+  }
+
+  return $proceed;
+}
+
+/**
+ * Searches for a game from the formball_games db
+ * given a condition and a value
+ *
+ * @param string $condition
+ * @param bool|TRUE $value
+ * @return NULL/mixed
+ */
+
+function search_game($condition = '', $value = '') {
+
+  $game = NULL;
+  $condition_check = ":$condition";
+
+  // value may be 0 (!=) but condition cannot evaluate to 0 (!==)
+  if($condition !== '' && $value != ''){
+    $result = db_query_range("
+      SELECT * FROM {formball_games}
+      WHERE $condition = $condition_check
+      ORDER BY timestamp DESC", 0, 1, array($condition_check => $value)
+    );
+
+    // Fetch next row as a stdClass object.
+    if($result && $result->rowCount() > 0) {
+      $game = $result->fetchObject();
+    }
+  }
+
+  return $game;
+}
+
+/**
+ * Search for a game field in the DB
+ *
+ * @param null $player
+ * @param string $field
+ * @param string $condition
+ * @param string $value
+ * @return null
+ */
+function search_game_field($player = NULL, $field = '', $condition = '', $value = '') {
+  $result = NULL;
+  $game = search_game($condition, $value);
+  if($game) {
+    $result = $game->$field;
+  }
+  return $result;
+}
 
 /**
  * Update a field or fields in the game db and object
@@ -231,24 +320,6 @@ function update_game_field(&$player, $fields = array(), $condition_key = '', $co
 }
 
 /**
- * Verify that the match data is correct before proceeding to the js code
- * To redirect both players to the match
- *
- * @param null $player
- * @param null $opponent
- * @return bool
- */
-function verify_match_data($player = NULL, $opponent = NULL){
-  $proceed = false;
-
-  if($player->opponent == $opponent->sid
-  && $opponent->opponent == $player->sid)
-    $proceed = true;
-
-  return $proceed;
-}
-
-/**
  * Resets the id column to 1
  */
 
@@ -256,7 +327,3 @@ function reset_id() {
   mysql_query("ALTER TABLE `formball_games` AUTO_INCREMENT=1");
 }
 
-
-// Might want to use timer_start instead of time()
-// https://api.drupal.org/api/drupal/includes!bootstrap.inc/function/timer_start/7
-// https://api.drupal.org/api/drupal/includes!common.inc/function/drupal_http_request/7

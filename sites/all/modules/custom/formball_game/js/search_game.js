@@ -7,6 +7,9 @@
       // Then send a message for game not found
       // if it has, redirect players to the appropriate page
       $.fn.start_game = function(path) {
+        var redirect_url = path;
+        window.location.pathname = redirect_url;
+
         //alert(path);
         //setTimeout(function() {
         //
