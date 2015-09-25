@@ -109,7 +109,7 @@ function create_new_game() {
     ->fields(array(
       'sid' => user_is_logged_in() ? $user->sid : session_id(),
       'uid' => $user->uid,
-      'search_state' => TRUE,
+      'state' => 'SEARCH',
       'timestamp' => $_SERVER['REQUEST_TIME_FLOAT'],
     ))
     ->execute();
@@ -130,7 +130,7 @@ function create_new_game() {
  * @return NULL/mixed
  */
 
-function search_for_game($player = NULL, $timeout = 0,  $condition = 'search_state', $value = TRUE) {
+function search_for_game($player = NULL, $timeout = 0,  $condition = 'state', $value = 'SEARCH') {
 
   $game = NULL;
   $condition_check = ":$condition";
@@ -175,7 +175,7 @@ function search_for_game($player = NULL, $timeout = 0,  $condition = 'search_sta
 
   // Wait for 2 seconds before calling the function again
   sleep(2);
-  return search_for_game($player, $timeout, 'search_state', TRUE);
+  return search_for_game($player, $timeout, 'state', 'SEARCH');
 }
 
 /**
@@ -245,9 +245,9 @@ function verify_match_data(&$player = NULL, &$opponent = NULL){
 
   if($player->opponent == $opponent->sid
   && $opponent->opponent == $player->sid) {
-    // Update the player and opponent search_state to false and proceed
+    // Update the player and opponent state to false and proceed
     $fields = array(
-      'search_state' => 1, // TODO change this to 0 after
+      'state' => 'SEARCH', // TODO change this to 0 after
     );
     update_game_field($player, $fields, 'sid', $player->sid);
     update_game_field($opponent, $fields, 'sid', $opponent->sid);
