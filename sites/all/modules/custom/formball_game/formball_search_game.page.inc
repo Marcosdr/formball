@@ -132,6 +132,16 @@ function create_new_game() {
 
 function search_for_game($player = NULL, $timeout = 0,  $condition = 'state', $value = 'SEARCH') {
 
+  // First check if some opponent has already assigned me a game
+  // If so, exit the search and continue
+  $path = search_game_field($player, 'path', 'sid', $player->sid);
+  if(!is_null($path)) {
+    $opponent = search_game_field($player, 'opponent', 'sid', $player->sid);
+    $game = search_game('sid', $opponent);
+    $player->opponent = $game->sid;
+    return $game;
+  }
+
   $game = NULL;
   $condition_check = ":$condition";
 
@@ -189,11 +199,11 @@ function set_match(&$player = NULL, &$opponent = NULL) {
 
   if($player != NULL && $opponent != NULL) {
 
-    // Check to see if the current player has it's values already set from the opponent
+    // Check to see if the current player has it's path values already set from the opponent
     $path = search_game_field($player, 'path', 'sid', $player->sid);
     if(!is_null($path)) {
       $player_type = search_game_field($player, 'player', 'sid', $player->sid);
-      // If it has been updated, then update the player records
+      // If the values have been updated, then update the current player records
       $fields = array(
         'path' => $path,
         'player' => $player_type,
@@ -229,6 +239,9 @@ function set_match(&$player = NULL, &$opponent = NULL) {
       );
       update_game_field($opponent, $fields, 'sid', $opponent->sid);
     }
+
+    // After making all the necessary changes, setup the players status to PLAY
+    update_state( $player, 'PLAY' );
   }
 }
 
@@ -245,12 +258,7 @@ function verify_match_data(&$player = NULL, &$opponent = NULL){
 
   if($player->opponent == $opponent->sid
   && $opponent->opponent == $player->sid) {
-    // Update the player and opponent state to false and proceed
-    $fields = array(
-      'state' => 'SEARCH', // TODO change this to 0 after
-    );
-    update_game_field($player, $fields, 'sid', $player->sid);
-    update_game_field($opponent, $fields, 'sid', $opponent->sid);
+    // verify that both are in PLAY mode, use Sleep here
     $proceed = true;
   }
 
@@ -323,6 +331,16 @@ function update_game_field(&$player, $fields = array(), $condition_key = '', $co
   foreach($fields as $key => $value) {
     $player->$key = $value;
   }
+}
+
+/**
+ * Handy function to change the player state in the db
+ * ex: SEARCH to PLAY, PLAY to GAMEOVER, etc.
+ * @param $player
+ * @param $new_state
+ */
+function update_state( $player, $new_state ) {
+  update_game_field( $player, array('state' => $new_state), 'sid', $player->sid );
 }
 
 /**
