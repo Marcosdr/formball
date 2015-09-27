@@ -59,10 +59,11 @@ function formball_game_menu() {
   );
 
   // Main game page
-  $items['game'] = array(
+  $items['match/%'] = array(
     'title' => 'Title',
     'description' => 'Page and elements of the game',
     'page callback' => 'formball_game_page',
+    'page arguments' => array(1),
     'access callback' => TRUE,
     'file' => 'formball_game.page.inc',
   );

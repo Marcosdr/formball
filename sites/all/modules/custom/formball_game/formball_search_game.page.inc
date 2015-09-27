@@ -213,7 +213,7 @@ function set_match(&$player = NULL, &$opponent = NULL) {
 
     // If the player doesn't have it's data updated, then update his and its opponent
     else {
-      $path = 'game';
+      $path = 'match/game-';
       $path .= drupal_substr($player->sid, 0, 7);
       $path .= drupal_substr($opponent->sid, 0, 7);
       if($player->timestamp < $opponent->timestamp) {

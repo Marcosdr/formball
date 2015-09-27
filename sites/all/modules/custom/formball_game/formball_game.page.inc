@@ -1,10 +1,10 @@
 <?php
 
-function formball_game_page() {
+function formball_game_page($arg1) {
   $build = array(
     'header' => array(
       '#type' => 'markup',
-      '#markup' => 'Here goes the game elements',
+      '#markup' => 'Here goes the game ' . $arg1 . ' elements',
     ),
     'game_table' => drupal_get_form('formball_game_form'),
 
