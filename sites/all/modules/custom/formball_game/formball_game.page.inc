@@ -1,4 +1,5 @@
 <?php
+require(drupal_get_path('module', 'formball_game') . '/includes/formball_utilities.inc');
 
 function formball_game_page($arg1) {
   $build = array(
@@ -7,6 +8,7 @@ function formball_game_page($arg1) {
       '#markup' => 'Here goes the game ' . $arg1 . ' elements',
     ),
     'game_table' => drupal_get_form('formball_game_form'),
+    //'game_table_opponent' => drupal_get_form('formball_game_opponent')
 
   );
   return $build;
@@ -22,10 +24,10 @@ function formball_game_page($arg1) {
 
 function formball_game_form($form, &$form_state) {
 
-  //kpr($form_state);
+  // Get the current player type
   $session_id = session_id();
-  $player_id = substr($session_id, 0, 7);
-
+  $player_type = search_game_field('player', 'sid', $session_id);
+  $opponent_type = ($player_type == 'A') ? 'B' : 'A';
 
   // Grab or set the variable that stores the players moves
   $player_moves = variable_get('player_moves', array());
@@ -52,6 +54,7 @@ function formball_game_form($form, &$form_state) {
           '#attributes' => array(
             'class' => array('input-' . $key, 'form-checkbox'),
           ),
+          '#disabled' => ($player !== $player_type),
         );
       }
     }
@@ -137,6 +140,7 @@ function formball_game_form_submit($form, &$form_state) {
  * Implements hook_theme()
  * Point to the theme for the game elements
  */
+/*
 function formball_game_theme($existing, $type, $theme, $path){
   $module_path = drupal_get_path('module', 'formball_game');
   $items['formball_game_form'] = array (
@@ -146,3 +150,4 @@ function formball_game_theme($existing, $type, $theme, $path){
   );
   return $items;
 }
+*/
