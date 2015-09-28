@@ -104,12 +104,14 @@ function formball_search_game_ajax($ajax) {
  * @throws \Exception
  */
 function create_new_game() {
+  $session_id = session_id();
+  $_SESSION['formball']['lists'] = $session_id;
 
   global $user;
 
   $game_id = db_insert('formball_games')
     ->fields(array(
-      'sid' => user_is_logged_in() ? $user->sid : session_id(),
+      'sid' => user_is_logged_in() ? $user->sid : $session_id,
       'uid' => $user->uid,
       'state' => 'SEARCH',
       'timestamp' => $_SERVER['REQUEST_TIME_FLOAT'],

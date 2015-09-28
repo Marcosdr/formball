@@ -63,14 +63,16 @@ function search_game_field($field = '', $condition = '', $value = '') {
  * @param string $condition_key
  * @param string $condition_value
  */
-function update_game_field(&$player, $fields = array(), $condition_key = '', $condition_value = '') {
+function update_game_field($player, $fields = array(), $condition_key = '', $condition_value = '') {
   db_update('formball_games')
     ->fields($fields)
     ->condition($condition_key, $condition_value)
     ->execute();
 
-  foreach($fields as $key => $value) {
-    $player->$key = $value;
+  if($player != NULL) {
+    foreach($fields as $key => $value) {
+      $player->$key = $value;
+    }
   }
 }
 
