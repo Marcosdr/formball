@@ -11,11 +11,14 @@ class Game {
 
   public function __construct() {
     $this->world = new GameWorld();
-    $this->renderer = new GameRenderer();
+    $this->renderer = new GameRenderer($this->world);
   }
 
-
-
+  public function render($option = '') {
+    //$this->world->update();
+    $output = $this->renderer->render($option);
+    return $output;
+  }
 
 
 }

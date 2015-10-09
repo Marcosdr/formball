@@ -20,5 +20,11 @@ class Ball {
     return $this->name;
   }
 
+  /**
+   * @return bool
+   */
+  public function has_ball() {
+    return $this->has_ball;
+  }
 
 }

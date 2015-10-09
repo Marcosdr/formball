@@ -1,6 +1,7 @@
 <?php
 require_once(drupal_get_path('module', 'formball_game') . '/includes/formball_utilities.inc');
 require_once(drupal_get_path('module', 'formball_game') . '/game/Game.php');
+require_once(drupal_get_path('module', 'formball_game') . '/game/renderElements/FormElement.php');
 
 function formball_game_page($arg1) {
 
@@ -29,111 +30,78 @@ function formball_game_form($form, &$form_state) {
   $game = new Game();
 
   // Create the players checkboxes
-  foreach ($game->world->getField()->getBoxes() as $box){
-    $key = $box->getName();
+  $checkboxes = $game->render('boxes');
+  foreach ($checkboxes as $checkbox){
+    $key = $checkbox->id;
 
     $form[$key] = array(
       '#title' => '',
       '#type' => 'checkbox',
-      '#default_value' => $box->has_player(),
+      '#default_value' => $checkbox->value,
       '#attributes' => array(
         'class' => array('input-' . $key, 'form-checkbox'),
       ),
-      '#disabled' => ($box->is_type() !== 'A'),
+      '#prefix' => $checkbox->prefix,
+      '#suffix' => $checkbox->suffix,
+      '#disabled' => $checkbox->is_opponent,
     );
   }
 
+
+//  foreach ($game->world->getField()->getBoxes() as $box){
+//    $key = $box->getName();
+//
+//    $form[$key] = array(
+//      '#title' => '',
+//      '#type' => 'checkbox',
+//      '#default_value' => $box->has_player(),
+//      '#attributes' => array(
+//        'class' => array('input-' . $key, 'form-checkbox'),
+//      ),
+//      '#disabled' => ($box->is_type() !== 'A'),
+//    );
+//  }
+
   // Pass the boxes values to the template
-  $form['boxes'] = array(
-    '#value' => $game->world->getField()->getBoxes(),
-  );
+//  $form['boxes'] = array(
+//    '#value' => $game->world->getField()->getBoxes(),
+//  );
+
 
   // Create array for Ball positions
   $options = array();
-  foreach ($game->world->getField()->getBalls() as $ball){
-    $key = $ball->getName();
+  $radios = $game->render('balls');
+  foreach ($radios as $radio){
+    $key = $radio->id;
     $options[$key] = $key;
   }
 
-  $form['ball'] = [
+
+//  foreach ($game->world->getField()->getBalls() as $ball){
+//    $key = $ball->getName();
+//    $options[$key] = $key;
+//  }
+
+
+  $form['ball'] = array(
     '#title' => '',
     '#type' => 'radios',
     '#options' => $options,
-  ];
+    );
 
-  // Pass the ball values to the template
-  $form['balls'] = array(
-    '#value' => $game->world->getField()->getBalls(),
+  $form['store'] = array(
+    '#type' => 'value',
+    '#value' => $radios,
   );
 
 
 
-  // Get player and opponent data and store them in objects
-  /*
-  $game->setPlayer(search_game('sid', $session_id));
-  $game->setOpponent(search_game('sid', $game->getPlayer()->opponent));
+  // Pass the ball values to the template
+//  $form['balls'] = array(
+//    '#value' => $game->world->getField()->getBalls(),
+//  );
 
 
-  // Grab latest player moves
-  $players = array($player_class, $opponent_class);
-  $players_moves = array();
-  foreach( $players as $player ) {
-    if($player->moves != null) {
-      $player_moves = unserialize($player->moves);
-      $player_moves = array_pop($player_moves);
-      $players_moves["player $player->player"] = $player_moves;
-    }
-  }
-  */
-  /* TEMP FOR TESTING */
-  //$players_moves['player B'] = 'player_B_1_1';
-  /* END TEMP */
-
-  //$players = array('A', 'B');
-  /* Logic to create form with appropriate checkboxes and its positions on table */
-  /*
-  foreach ($players as $player){
-    for ($i=0; $i<9; $i++) {
-      for($j=0; $j<5; $j++) {
-        $row = $i + 1;
-        $column = $j + 1;
-        $key = 'player_' . $player . '_' . $row . '_' . $column;
-        // create 4 checkboxes on even rows, 5 on odd
-        if($i % 2 == 1 && $j == 4) break;
-        // Validate if player moves is an array, aka, contain moves to set the default value
-        $moves = array();
-        if(isset($players_moves["player $player"])) {
-          $moves = is_array($players_moves["player $player"])? $players_moves["player $player"] : array('');
-        }
-        $form[$key] = array(
-          '#title' => '',
-          '#type' => 'checkbox',
-          '#default_value' => in_array($key, $moves),
-          '#attributes' => array(
-            'class' => array('input-' . $key, 'form-checkbox'),
-          ),
-          '#disabled' => ($player !== $player_class->player),
-        );
-      }
-    }
-
-  }
-  */
-  /* Create array for Ball positions */
-//  $options = array();
-//  for ($i=0; $i<9; $i++) {
-//    for ($j = 0; $j < 5; $j++) {
-//      $row = $i + 1;
-//      $column = $j + 1;
-//      $options["ball_{$row}_{$column}"] = "ball_{$row}_{$column}";
-//    }
-//  }
-
-//  $form['ball'] = [
-//    '#title' => '',
-//    '#type' => 'radios',
-//    '#options' => $options,
-//  ];
 
   $form['submit'] = array(
     '#type' => 'submit',
@@ -142,6 +110,7 @@ function formball_game_form($form, &$form_state) {
 
   return $form;
 }
+
 
 /**
  * Validation for game_board_form()
