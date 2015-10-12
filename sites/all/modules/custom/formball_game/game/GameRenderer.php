@@ -53,18 +53,6 @@ class GameRenderer {
       $form_element->is_opponent = $box->is_type() !== 'A';
 
       $form_elements[] = $form_element;
-
-        /*
-        '<input id="' . $box->getName() .
-        '" class="' . 'input-' . $box->getName() . ' form-checkbox' .
-        '" type="checkbox' .
-        '" value="' . $box->has_player() .
-        '" name="' . $box->getName() .
-        '" ' . $checked .
-        '></input>' .
-        '<label for="' . $box->getName() . '"><span></span></label>' .
-        '</div>';
-        */
     }
     return $form_elements;
   }
@@ -85,22 +73,6 @@ class GameRenderer {
 
       $form_elements[] = $form_element;
 
-      /*
-      $output .= '
-            <div class="' . $ball->getName() . '" style="' .
-        'position: absolute; ' .
-        'top: ' . $ball->pos_y . '%; ' .
-        'left: '. $ball->pos_x . '%;">' .
-
-        '<input id="' . $ball->getName() .
-        '" type="radio' .
-        '" value="' . $ball->has_ball() .
-        '" name="' . $ball->getName() .
-        '"></input>' .
-        '<label for="' . $ball->getName() . '"></label>' .
-
-        '</div>';
-      */
     }
 
     return $form_elements;

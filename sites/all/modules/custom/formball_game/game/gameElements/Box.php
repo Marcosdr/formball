@@ -37,5 +37,4 @@ class Box {
     return $this->hasPlayer;
   }
 
-
 }

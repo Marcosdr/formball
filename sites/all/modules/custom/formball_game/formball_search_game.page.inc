@@ -7,10 +7,13 @@
  */
 function formball_search_game_page() {
   $build = array(
-    'header' => array(
+    'line_up_header' => array(
       '#type' => 'markup',
-      '#markup' => t('Click below to search for available games') . '</br>',
+      '#markup' => '<div class="header"><h3>' . t('Select your line up') . '</h3></div>',
     ),
+
+    'line_up_form' => drupal_get_form('line_up_form'),
+
     'search_game' => array (
       '#type' => 'link',
       '#title' => t('Search Game'),
@@ -23,6 +26,96 @@ function formball_search_game_page() {
     ),
   );
   return $build;
+}
+
+function line_up_form($form, &$form_state) {
+  $width = '" width="250px">';
+
+  $form['start_grid'] = array(
+    '#type' => 'item',
+    '#markup' => '<div class="pure-g clearfix">',
+  );
+
+  $form['players'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array(
+        'pure-u-1 pure-u-md-1-2',
+      ),
+    ),
+  );
+
+  $form['line_up'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array(
+        'pure-u-1 pure-u-md-1-2',
+      ),
+    ),
+  );
+
+  $form['line_up']['line_up_3_2_1'] = array(
+    '#type' => 'item',
+    '#markup' => '<img src="' . drupal_get_path('module', 'formball_game') . '/images/lineup-3-2-1.jpg' . $width,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="line_up_radios"]' => array('value' => '0'),
+      ),
+    ),
+  );
+  $form['line_up']['line_up_3_1_2'] = array(
+    '#type' => 'item',
+    '#markup' => '<img src="' . drupal_get_path('module', 'formball_game') . '/images/lineup-3-1-2.jpg' . $width,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="line_up_radios"]' => array('value' => '1'),
+      ),
+    ),
+  );
+  $form['line_up']['line_up_2_3_1'] = array(
+    '#type' => 'item',
+    '#markup' => '<img src="' . drupal_get_path('module', 'formball_game') . '/images/lineup-2-3-1.jpg' . $width,
+    '#states' => array(
+      'visible' => array(
+        ':input[name="line_up_radios"]' => array('value' => '2'),
+      ),
+    ),
+  );
+  $form['line_up']['line_up_2_2_2'] = array(
+    '#type' => 'item',
+    '#markup' => '<img src="' . drupal_get_path('module', 'formball_game') . '/images/lineup-2-2-2.jpg' . $width,
+    '#states' => array(
+      // Only show this field when the 'toggle_me' checkbox is enabled.
+      'visible' => array(
+        ':input[name="line_up_radios"]' => array('value' => '3'),
+      ),
+    ),
+  );
+  $form['line_up']['line_up_radios'] = array(
+    '#type' => 'radios',
+    '#options' => array(
+      0 => t('3-2-1'),
+      1 => t('3-1-2'),
+      2 => t('2-3-1'),
+      3 => t('2-2-2'),
+    ),
+  );
+  $form['end_grid'] = array(
+    '#type' => 'item',
+    '#markup' => '</div>',
+  );
+
+  return $form;
+}
+
+
+function formball_game_preprocess_form_element(&$variables) {
+  $element = $variables['element'];
+
+  if ($element['#type'] == 'item') {
+    $variables['element']['#attributes']['class'][] = 'caca';
+  }
+
 }
 
 /**

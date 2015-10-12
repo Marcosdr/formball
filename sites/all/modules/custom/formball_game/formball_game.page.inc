@@ -47,27 +47,6 @@ function formball_game_form($form, &$form_state) {
     );
   }
 
-
-//  foreach ($game->world->getField()->getBoxes() as $box){
-//    $key = $box->getName();
-//
-//    $form[$key] = array(
-//      '#title' => '',
-//      '#type' => 'checkbox',
-//      '#default_value' => $box->has_player(),
-//      '#attributes' => array(
-//        'class' => array('input-' . $key, 'form-checkbox'),
-//      ),
-//      '#disabled' => ($box->is_type() !== 'A'),
-//    );
-//  }
-
-  // Pass the boxes values to the template
-//  $form['boxes'] = array(
-//    '#value' => $game->world->getField()->getBoxes(),
-//  );
-
-
   // Create array for Ball positions
   $options = array();
   $radios = $game->render('balls');
@@ -75,13 +54,6 @@ function formball_game_form($form, &$form_state) {
     $key = $radio->id;
     $options[$key] = $key;
   }
-
-
-//  foreach ($game->world->getField()->getBalls() as $ball){
-//    $key = $ball->getName();
-//    $options[$key] = $key;
-//  }
-
 
   $form['ball'] = array(
     '#title' => '',
@@ -93,14 +65,6 @@ function formball_game_form($form, &$form_state) {
     '#type' => 'value',
     '#value' => $radios,
   );
-
-
-
-  // Pass the ball values to the template
-//  $form['balls'] = array(
-//    '#value' => $game->world->getField()->getBalls(),
-//  );
-
 
 
   $form['submit'] = array(
@@ -121,30 +85,9 @@ function formball_game_form_validate($form, &$form_state) {
 
   // Grab the current player positions (Moves)
   // Store the players moves in an array
-  $player_moves = array(
-    'player A' => '',
-    'player B' => '',
-  );
 
   // check to see which moves has the player done and validate them
-  $players = array('A', 'B');
-  foreach ($players as $player) {
-    for ($i = 0; $i < 9; $i++) {
-      for ($j = 0; $j < 5; $j++) {
-        if($i % 2 == 1 && $j == 4) break;
-        $row = $i + 1;
-        $column = $j + 1;
-        $key = 'player_' . $player . '_' . $row . '_' . $column;
-        if($form_state['values'][$key] == 1 ){
-          if ($player == 'A') {
-            $player_moves['player A'][] = $key;
-          } else $player_moves['player B'][] = $key ;
-        }
-      }
-    }
-  }
 
-  $form_state['storage']['player_moves'] = $player_moves;
 }
 
 
@@ -152,20 +95,6 @@ function formball_game_form_validate($form, &$form_state) {
  * Submit function for game_board_form()
  */
 function formball_game_form_submit($form, &$form_state) {
-  $session_id = session_id();
-
-  $player = search_game_field('player', 'sid', $session_id);
-  $player = 'player ' . $player;
-
-  // Grab the players moves from the validation form
-  $player_moves = serialize($form_state['storage']['player_moves'][$player]);
-
-  // Store the players moves in the database variable to grab when page refreshes
-  $player = NULL;
-  update_game_field($player, array('moves' => $player_moves), 'sid', $session_id);
-
-  // Display messages here
-  //drupal_set_message(implode(" ", $player_moves));
 
 }
 
