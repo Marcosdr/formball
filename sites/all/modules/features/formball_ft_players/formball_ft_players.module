@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Players feature.
+ */
+
+include_once 'formball_ft_players.features.inc';
