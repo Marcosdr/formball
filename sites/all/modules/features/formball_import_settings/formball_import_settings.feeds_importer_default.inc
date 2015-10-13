@@ -43,46 +43,51 @@ function formball_import_settings_feeds_importer_default() {
         'expire' => '-1',
         'mappings' => array(
           0 => array(
-            'source' => 'Name',
+            'source' => 'ID',
             'target' => 'title',
-            'unique' => FALSE,
+            'unique' => 1,
           ),
           1 => array(
+            'source' => 'Name',
+            'target' => 'field_player_name',
+            'unique' => FALSE,
+          ),
+          2 => array(
             'source' => 'Team',
             'target' => 'field_player_team',
             'unique' => FALSE,
           ),
-          2 => array(
+          3 => array(
             'source' => 'Position',
             'target' => 'field_player_position',
             'unique' => FALSE,
           ),
-          3 => array(
+          4 => array(
             'source' => 'Number',
             'target' => 'field_player_number',
             'unique' => FALSE,
           ),
-          4 => array(
+          5 => array(
             'source' => 'Speed',
             'target' => 'field_player_speed',
             'unique' => FALSE,
           ),
-          5 => array(
+          6 => array(
             'source' => 'Offense',
             'target' => 'field_player_offense',
             'unique' => FALSE,
           ),
-          6 => array(
+          7 => array(
             'source' => 'Defense',
             'target' => 'field_player_defense',
             'unique' => FALSE,
           ),
-          7 => array(
+          8 => array(
             'source' => 'Technic',
             'target' => 'field_player_technic',
             'unique' => FALSE,
           ),
-          8 => array(
+          9 => array(
             'source' => 'Kick',
             'target' => 'field_player_kick',
             'unique' => FALSE,

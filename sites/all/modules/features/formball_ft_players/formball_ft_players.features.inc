@@ -30,7 +30,7 @@ function formball_ft_players_node_info() {
       'base' => 'node_content',
       'description' => t('Football players of the game, not the users. With descriptive data of their position, team, skills, etc.'),
       'has_title' => '1',
-      'title_label' => t('Name'),
+      'title_label' => t('Id'),
       'help' => '',
     ),
   );
