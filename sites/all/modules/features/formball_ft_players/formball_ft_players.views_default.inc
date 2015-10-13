@@ -35,9 +35,14 @@ function formball_ft_players_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Name';
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['label'] = 'id';
+  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
+  /* Field: Content: Name */
+  $handler->display->display_options['fields']['field_player_name']['id'] = 'field_player_name';
+  $handler->display->display_options['fields']['field_player_name']['table'] = 'field_data_field_player_name';
+  $handler->display->display_options['fields']['field_player_name']['field'] = 'field_player_name';
+  $handler->display->display_options['fields']['field_player_name']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['field_player_name']['alter']['path'] = 'player/[title]';
   /* Field: Content: Team */
   $handler->display->display_options['fields']['field_player_team']['id'] = 'field_player_team';
   $handler->display->display_options['fields']['field_player_team']['table'] = 'field_data_field_player_team';
