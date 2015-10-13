@@ -74,11 +74,10 @@
  *======================================================
  */
 
-  /* Add the gameboard class at the end */
-
-  input[type="checkbox"] {
-    display:none;
-  }
+/* Add the gameboard class at the end */
+#game-wrapper input[type="checkbox"] {
+  display:none;
+}
 
 /**
  *------------------------------------------------------
@@ -86,17 +85,17 @@
  *------------------------------------------------------
  */
 
-  input[type="checkbox"] + label span {
-    display:inline-block;
-    width:22px;
-    height:22px;
-    cursor: pointer;
-    background:url(../images/player-empty.png) left top no-repeat;
-  }
+#game-wrapper input[type="checkbox"] + label span {
+  display:inline-block;
+  width:22px;
+  height:22px;
+  cursor: pointer;
+  background:url(../images/player-empty.png) left top no-repeat;
+}
 
-  input[type="checkbox"]:hover + label span {
-    background:url(../images/player-empty.png) left -22px no-repeat;
-  }
+#game-wrapper input[type="checkbox"]:hover + label span {
+  background:url(../images/player-empty.png) left -22px no-repeat;
+}
 
 
   /* place the goalkeepers in correct position */
@@ -121,23 +120,23 @@
 
   /* Player */
 
-  input[type="checkbox"][class*=player_A]:checked + label span {
-    background:url(../images/player-colors.png) left -22px no-repeat;
-  }
+input[type="checkbox"][class*=player_A]:checked + label span {
+  background:url(../images/player-colors.png) left -22px no-repeat;
+}
 
-  input[type="checkbox"][class*=player_A]:checked + label:hover span {
-    background:url(../images/player-colors.png) left -44px no-repeat;
-  }
+input[type="checkbox"][class*=player_A]:checked + label:hover span {
+  background:url(../images/player-colors.png) left -44px no-repeat;
+}
 
-  /* Opponent */
+/* Opponent */
 
-  input[type="checkbox"][class*=player_B]:checked + label span {
-    background:url(../images/opponent-colors.png) left -22px no-repeat;
-  }
+input[type="checkbox"][class*=player_B]:checked + label span {
+  background:url(../images/opponent-colors.png) left -22px no-repeat;
+}
 
-  input[type="checkbox"][class*=player_B]:checked + label:hover span {
-    background:url(../images/opponent-colors.png) left -44px no-repeat;
-  }
+input[type="checkbox"][class*=player_B]:checked + label:hover span {
+  background:url(../images/opponent-colors.png) left -44px no-repeat;
+}
 
 
 /* References */

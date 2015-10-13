@@ -45,7 +45,7 @@ function formball_ft_players_field_default_field_instances() {
     'label' => 'Defense',
     'required' => 1,
     'settings' => array(
-      'max' => 10,
+      'max' => 100,
       'min' => 0,
       'prefix' => '',
       'suffix' => '',
@@ -95,7 +95,7 @@ function formball_ft_players_field_default_field_instances() {
     'label' => 'Kick',
     'required' => 0,
     'settings' => array(
-      'max' => 10,
+      'max' => 100,
       'min' => 0,
       'prefix' => '',
       'suffix' => '',
@@ -195,7 +195,7 @@ function formball_ft_players_field_default_field_instances() {
     'label' => 'Offense',
     'required' => 1,
     'settings' => array(
-      'max' => 10,
+      'max' => 100,
       'min' => 0,
       'prefix' => '',
       'suffix' => '',
@@ -256,7 +256,7 @@ function formball_ft_players_field_default_field_instances() {
     'bundle' => 'player',
     'default_value' => array(
       0 => array(
-        'value' => 1,
+        'value' => 0,
       ),
     ),
     'deleted' => 0,
@@ -286,7 +286,7 @@ function formball_ft_players_field_default_field_instances() {
     'label' => 'Speed',
     'required' => 1,
     'settings' => array(
-      'max' => 10,
+      'max' => 100,
       'min' => 0,
       'prefix' => '',
       'suffix' => '',
@@ -377,7 +377,7 @@ function formball_ft_players_field_default_field_instances() {
     'label' => 'Technic',
     'required' => 0,
     'settings' => array(
-      'max' => 10,
+      'max' => 100,
       'min' => 0,
       'prefix' => '',
       'suffix' => '',
