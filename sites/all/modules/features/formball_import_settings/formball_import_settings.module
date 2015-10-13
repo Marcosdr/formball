@@ -1,5 +1,7 @@
 <?php
 /**
  * @file
- * Drupal needs this blank file.
+ * Code for the Import Settings feature.
  */
+
+include_once 'formball_import_settings.features.inc';
