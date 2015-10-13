@@ -93,3 +93,25 @@ function update_state( $player, $new_state ) {
 function reset_id() {
   mysql_query("ALTER TABLE `formball_games` AUTO_INCREMENT=1");
 }
+
+/**
+ *
+ * Select elements from a database based on conditions
+ *
+ * @param $db
+ * @param array $conditions
+ * @return array of elements selected
+ */
+function select_from_db($db, $conditions = array()) {
+  $result = array();
+  $query = db_select($db, 'db')
+	->fields('db');
+  foreach($conditions as $condition=>$value) {
+    $query->condition($condition, $value);
+  }
+  $result_set = $query->execute();
+  foreach($result_set as $row) {
+	$result[] = $row;
+  }
+  return $result;
+}
