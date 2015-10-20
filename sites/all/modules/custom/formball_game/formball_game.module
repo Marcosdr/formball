@@ -9,7 +9,6 @@
  * Implements hook_init()
  */
 function formball_game_init() {
-
   $session_id = session_id();
   $player_id = substr($session_id, 0, 7);
 }
@@ -84,3 +83,16 @@ function formball_game_menu() {
   return $items;
 }
 
+/**
+ * Implements hook_theme().
+ * @return array
+ */
+function formball_theme() {
+  return array(
+    // Theme function for the search form line up.
+    'tabledrag_example_simple_form' => array(
+      'render element' => 'form',
+      'file' => 'includes/formball_search_line_up.inc',
+    ),
+  );
+}
