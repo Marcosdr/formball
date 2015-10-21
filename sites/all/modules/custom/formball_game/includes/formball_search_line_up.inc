@@ -1,37 +1,21 @@
 <?php
 
-function formball_line_up_form($form, &$form_state) {
+function formball_game_line_up_form($form, &$form_state) {
 
   // Identify that the elements in 'player_items' are a collection, to
   // prevent Form API from flattening the array when submitted.
   $form['player_items']['#tree'] = TRUE;
 
   // Fetch the players data from the database, ordered by weight ascending.
-  $players = get_line_up_players();
+  $line_up_players = get_line_up_players();
 
-  $player_output = array();
-  foreach($players as $type => $player_set) {
-    foreach($player_set as $player){
-      $output = $type . " ";
-      $output .= $player->field_player_number[LANGUAGE_NONE][0]['value'] . " ";
-      $output .= $player->field_player_name[LANGUAGE_NONE][0]['value'];
-      $player_output[] = $output;
-    }
-
-  }
-  $attributes = array(
-    'id' => 'my-custom-listing',
-    'class' => 'custom-class another-custom-class',
-  );
-
-  $width = '" width="250px">';
-
+  // Start building the container for the players and the field lineup
   $form['start_grid'] = array(
     '#type' => 'item',
     '#markup' => '<div class="pure-g clearfix">',
   );
 
-  $form['players'] = array(
+  $form['line-up-players'] = array(
     '#type' => 'container',
     '#attributes' => array(
       'class' => array(
@@ -40,16 +24,31 @@ function formball_line_up_form($form, &$form_state) {
     ),
   );
 
-  $form['players']['line_up_players'] = array(
-    '#type' => 'item',
-    '#markup' => theme_item_list(array(
-      'items' => $player_output,
-      'title' => 'players',
-      'type' => 'ul',
-      'attributes' => $attributes,
-    )),
-  );
+  // Iterate through each line up player.
+  foreach($line_up_players as $key_position => $position){
+    foreach($position['players'] as $player) {
+      $id = $player->nid->value();
+      // Create a form entry for this item with unique id as the player id.
+      $form['line-up-players'][$id] = array(
+        'position' => array(
+          '#markup' => '<div class="player-' . strtolower($key_position) .
+                       '">' . $key_position . '</div>',
+        ),
+        'name' => array(
+          '#markup' => '<div class="player-name">' . $player->field_player_name->value() . '</div>',
+        ),
+        'weight' => array(
+          '#type' => 'weight',
+          '#title' => t('Weight'),
+          '#default_value' => $player->field_player_weight->value(),
+          '#delta' => 10,
+          '#title_display' => 'invisible',
+        ),
+      );
+    }
+  }
 
+  $width = '" width="250px">';
   $form['line_up'] = array(
     '#type' => 'container',
     '#attributes' => array(
@@ -119,74 +118,127 @@ function get_line_up_players(){
   $conditions = array(
     'field_player_team_tid' => '12',
   );
-  $all_players = select_from_db($db, $conditions);
+  $all_db_players = select_from_db($db, $conditions);
 
-  return select_line_up_players($all_players);
+  return select_line_up_players($all_db_players);
 }
 
-function select_line_up_players($players_type) {
-  $players = array();
-  foreach($players_type as $player) {
-    $players[] = node_load($player->entity_id);
+function select_line_up_players($all_db_players) {
+  // Init line-up players array
+  $line_up_players = array(
+    'GK' => array('players' => array(), 'count' => 1),
+    'DF' => array('players' => array(), 'count' => 3),
+    'MD' => array('players' => array(), 'count' => 3),
+    'FW' => array('players' => array(), 'count' => 2),
+  );
+
+  // Grab all player nodes from the db selected players
+  $all_players = array();
+  foreach($all_db_players as $player) {
+    $player_node = node_load($player->entity_id);
+    $all_players[] = entity_metadata_wrapper('node', $player_node);
   }
 
-  $all_players = array(
-    'gk' => array(),
-    'df' => array(),
-    'md' => array(),
-    'fw' => array(),
-  );
-
-  foreach($players as $player){
-    if (isset($player->field_player_position)) {
-      $position = taxonomy_term_load($player->field_player_position[LANGUAGE_NONE][0]['tid']);
-    }
-    switch($position->name) {
-      case 'GK':
-        $all_players['gk'][] = $player;
-        break;
-      case 'DF':
-        $all_players['df'][] = $player;
-        break;
-      case 'MD':
-        $all_players['md'][] = $player;
-        break;
-      case 'FW':
-        $all_players['fw'][] = $player;
-        break;
-    }
-  }
-  $line_up = array(
-    'gk' => array(),
-    'df' => array(),
-    'md' => array(),
-    'fw' => array(),
-  );
-
-  $num_players = array(
-    'gk' => 1,
-    'df' => 3,
-    'md' => 3,
-    'fw' => 2,
-  );
-  foreach($num_players as $type => $num) {
-    for($i=0;$i<$num;$i++) {
-      $rand_keys = array_rand($all_players[$type], $num);
-      if($type == 'gk') {
-        $line_up[$type][] = $all_players[$type][$rand_keys];
-      }
-      else {
-        $line_up[$type][] = $all_players[$type][$rand_keys[$i]];
+  // Shuffle the players
+  if(shuffle($all_players)){
+    // Select the line-up players
+    foreach($all_players as $player){
+      if (isset($player->field_player_position)) {
+        // Grab the position the player plays as (GK, DF, MD or FW)
+        $position = $player->field_player_position->value()->name;
+        $current_count = count($line_up_players[$position]['players']);
+        if($current_count < $line_up_players[$position]['count']) {
+          define_player_weight($player, $position, $current_count);
+          switch ($position) {
+            case 'GK':
+              $line_up_players['GK']['players'][] = $player;
+              break;
+            case 'DF':
+              $line_up_players['DF']['players'][] = $player;
+              break;
+            case 'MD':
+              $line_up_players['MD']['players'][] = $player;
+              break;
+            case 'FW':
+              $line_up_players['FW']['players'][] = $player;
+              break;
+          }
+        }
       }
     }
   }
-  return $line_up;
+
+  return $line_up_players;
+}
+
+/**
+ * Defines the weight values for each of the 9 players that form the lineup.
+ *
+ * @param object $player The player entity object
+ * @param string $position GK, DF, MF or FW
+ * @param int $count The current count of the players in each position
+ */
+function define_player_weight(&$player, $position, $count) {
+  switch ($position) {
+    case 'GK':
+      $player->field_player_weight->set(1);
+      break;
+    case 'DF':
+      $player->field_player_weight->set($count + 2);
+      break;
+    case 'MD':
+      if($count === 2) $player->field_player_weight->set(8);
+      else $player->field_player_weight->set($count + 5);
+      break;
+    case 'FW':
+      if($count === 1) $player->field_player_weight->set(9);
+      else $player->field_player_weight->set(7);
+      break;
+  }
 }
 
 /**
  * Theme function for the line up players form
  * @param $variables
  */
-function theme_formball_line_up_form($variables) {
+function theme_formball_game_line_up_form($variables) {
+  $form = $variables['form'];
+  $rows = array();
+
+  // Iterate over each element in our $form['line-up-players'] array.
+  foreach (element_children($form['line-up-players']) as $id) {
+    //adding custom class so that it can be identified in the drupal_add_tabledrag call.
+    $form['line-up-players'][$id]['weight']['#attributes']['class'] = array('line-up-players-weight');
+
+    $rows[] = array(
+      'data' => array(
+        drupal_render($form['line-up-players'][$id]['position']),
+        drupal_render($form['line-up-players'][$id]['name']),
+        drupal_render($form['line-up-players'][$id]['weight']),
+      ),
+      // To support the tabledrag behaviour, we need to assign each row of the
+      // table a class attribute of 'draggable'. This will add the 'draggable'
+      // class to the <tr> element for that row when the final table is
+      // rendered.
+      'class' => array('draggable'),
+    );
+  }
+
+  $header = array(t('Position'), t('Name'), t('Weight'));
+  // id to pass to the drupal_add_tabledrag() function which will
+  // be used to identify the <table> element containing our tabledrag form.
+  $table_id = 'line-up-players-table';
+
+  $form['line-up-players']['players-list']['table']['#markup'] = theme('table', array(
+    'header' => $header,
+    'rows' => $rows,
+    'attributes' => array('id' => $table_id),
+  ));
+  // render any remaining form elements (such as the field lineup).
+  $output = drupal_render_children($form);
+
+  // function in order to add the tabledrag.js functionality to the table.
+  drupal_add_tabledrag($table_id, 'order', 'sibling', 'line-up-players-weight');
+  return $output;
 
 }

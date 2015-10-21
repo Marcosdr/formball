@@ -87,10 +87,10 @@ function formball_game_menu() {
  * Implements hook_theme().
  * @return array
  */
-function formball_theme() {
+function formball_game_theme() {
   return array(
     // Theme function for the search form line up.
-    'tabledrag_example_simple_form' => array(
+    'formball_game_line_up_form' => array(
       'render element' => 'form',
       'file' => 'includes/formball_search_line_up.inc',
     ),

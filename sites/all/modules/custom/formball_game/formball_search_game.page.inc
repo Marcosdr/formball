@@ -12,7 +12,7 @@ function formball_search_game_page() {
       '#markup' => '<div class="header"><h3>' . t('Select your line up') . '</h3></div>',
     ),
 
-    'line_up_form' => drupal_get_form('formball_line_up_form'),
+    'line_up_form' => drupal_get_form('formball_game_line_up_form'),
 
     'search_game' => array (
       '#type' => 'link',
