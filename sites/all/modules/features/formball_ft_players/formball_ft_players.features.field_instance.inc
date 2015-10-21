@@ -467,8 +467,8 @@ function formball_ft_players_field_default_field_instances() {
     'label' => 'Weight',
     'required' => 0,
     'settings' => array(
-      'max' => '',
-      'min' => '',
+      'max' => 9,
+      'min' => 1,
       'prefix' => '',
       'suffix' => '',
       'user_register_form' => FALSE,
