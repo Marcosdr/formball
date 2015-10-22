@@ -15,7 +15,7 @@ function formball_game_line_up_form($form, &$form_state) {
     '#markup' => '<div class="pure-g clearfix">',
   );
 
-  $form['line-up-players'] = array(
+  $form['line_up_players'] = array(
     '#type' => 'container',
     '#attributes' => array(
       'class' => array(
@@ -29,9 +29,9 @@ function formball_game_line_up_form($form, &$form_state) {
     foreach($position['players'] as $player) {
       $id = $player->nid->value();
       // Create a form entry for this item with unique id as the player id.
-      $form['line-up-players'][$id] = array(
+      $form['line_up_players'][$id] = array(
         'position' => array(
-          '#markup' => '<div class="player-' . strtolower($key_position) .
+          '#markup' => '<div class="player-pos-' . strtolower($key_position) .
                        '">' . $key_position . '</div>',
         ),
         'name' => array(
@@ -49,7 +49,7 @@ function formball_game_line_up_form($form, &$form_state) {
   }
 
   $width = '" width="250px">';
-  $form['line_up'] = array(
+  $form['line_up_field'] = array(
     '#type' => 'container',
     '#attributes' => array(
       'class' => array(
@@ -58,7 +58,7 @@ function formball_game_line_up_form($form, &$form_state) {
     ),
   );
 
-  $form['line_up']['line_up_3_2_1'] = array(
+  $form['line_up_field']['line_up_3_2_1'] = array(
     '#type' => 'item',
     '#markup' => '<img src="' . drupal_get_path('module', 'formball_game') . '/images/lineup-3-2-1.jpg' . $width,
     '#states' => array(
@@ -67,7 +67,7 @@ function formball_game_line_up_form($form, &$form_state) {
       ),
     ),
   );
-  $form['line_up']['line_up_3_1_2'] = array(
+  $form['line_up_field']['line_up_3_1_2'] = array(
     '#type' => 'item',
     '#markup' => '<img src="' . drupal_get_path('module', 'formball_game') . '/images/lineup-3-1-2.jpg' . $width,
     '#states' => array(
@@ -76,7 +76,7 @@ function formball_game_line_up_form($form, &$form_state) {
       ),
     ),
   );
-  $form['line_up']['line_up_2_3_1'] = array(
+  $form['line_up_field']['line_up_2_3_1'] = array(
     '#type' => 'item',
     '#markup' => '<img src="' . drupal_get_path('module', 'formball_game') . '/images/lineup-2-3-1.jpg' . $width,
     '#states' => array(
@@ -85,7 +85,7 @@ function formball_game_line_up_form($form, &$form_state) {
       ),
     ),
   );
-  $form['line_up']['line_up_2_2_2'] = array(
+  $form['line_up_field']['line_up_2_2_2'] = array(
     '#type' => 'item',
     '#markup' => '<img src="' . drupal_get_path('module', 'formball_game') . '/images/lineup-2-2-2.jpg' . $width,
     '#states' => array(
@@ -95,7 +95,7 @@ function formball_game_line_up_form($form, &$form_state) {
       ),
     ),
   );
-  $form['line_up']['line_up_radios'] = array(
+  $form['line_up_field']['line_up_radios'] = array(
     '#type' => 'radios',
     '#options' => array(
       0 => t('3-2-1'),
@@ -206,15 +206,15 @@ function theme_formball_game_line_up_form($variables) {
   $rows = array();
 
   // Iterate over each element in our $form['line-up-players'] array.
-  foreach (element_children($form['line-up-players']) as $id) {
+  foreach (element_children($form['line_up_players']) as $id) {
     //adding custom class so that it can be identified in the drupal_add_tabledrag call.
-    $form['line-up-players'][$id]['weight']['#attributes']['class'] = array('line-up-players-weight');
+    $form['line_up_players'][$id]['weight']['#attributes']['class'] = array('line-up-players-weight');
 
     $rows[] = array(
       'data' => array(
-        drupal_render($form['line-up-players'][$id]['position']),
-        drupal_render($form['line-up-players'][$id]['name']),
-        drupal_render($form['line-up-players'][$id]['weight']),
+        drupal_render($form['line_up_players'][$id]['position']),
+        drupal_render($form['line_up_players'][$id]['name']),
+        drupal_render($form['line_up_players'][$id]['weight']),
       ),
       // To support the tabledrag behaviour, we need to assign each row of the
       // table a class attribute of 'draggable'. This will add the 'draggable'
@@ -229,7 +229,7 @@ function theme_formball_game_line_up_form($variables) {
   // be used to identify the <table> element containing our tabledrag form.
   $table_id = 'line-up-players-table';
 
-  $form['line-up-players']['players-list']['table']['#markup'] = theme('table', array(
+  $form['line_up_players']['players_list']['table']['#markup'] = theme('table', array(
     'header' => $header,
     'rows' => $rows,
     'attributes' => array('id' => $table_id),

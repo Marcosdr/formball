@@ -2,3 +2,50 @@
   display: inline-block;
   margin-right: 10px;
 }
+
+#line-up-players-table [class^=player-pos] {
+  padding: 5px;
+  font-weight: bold;
+  display: inline-block;
+  color: white;
+  width: 24px;
+  text-align: center;
+  margin-right: 10px;
+}
+
+#line-up-players-table .player-pos-gk {
+  background-color: green;
+}
+#line-up-players-table .player-pos-df {
+  background-color: blue;
+}
+#line-up-players-table .player-pos-md {
+  background-color: blueviolet;
+}
+#line-up-players-table .player-pos-fw {
+  background-color: #ce5c00;
+}
+
+#line-up-players-table .player-name {
+  margin-right: 10px;
+}
+
+#edit-line-up-players .tabledrag-toggle-weight-wrapper,
+#line-up-players-table thead {
+  display: none;
+}
+
+#line-up-players-table .tabledrag-handle {
+  margin-left: -0.2em;
+}
+
+#edit-line-up-field [id^=edit-line-up] {
+  margin-top: 0;
+}
+
+#line-up-players-table tr:nth-last-child(2),
+#line-up-players-table tr:last-child {
+  position: relative;
+  top: 28px;
+  background-color: bisque;
+}
