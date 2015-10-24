@@ -24,6 +24,7 @@ function formball_game_line_up_form($form, &$form_state) {
     ),
   );
 
+
   // Iterate through each line up player.
   foreach($line_up_players as $key_position => $position){
     foreach($position['players'] as $player) {
@@ -34,9 +35,16 @@ function formball_game_line_up_form($form, &$form_state) {
           '#markup' => '<div class="player-pos-' . strtolower($key_position) .
                        '">' . $key_position . '</div>',
         ),
-        'name' => array(
-          '#markup' => '<div class="player-name">' . $player->field_player_name->value() . '</div>',
-        ),
+        'name' => array (
+          '#type' => 'link',
+          '#title' => $player->field_player_name->value(),
+          '#href' => 'player/values/nojs/' . $id,
+          '#prefix' => '<div class="player-name">',
+          '#suffix' => '</div>',
+          '#ajax' => array(
+            'effect' => 'fade',
+          )),
+
         'weight' => array(
           '#type' => 'weight',
           '#title' => t('Weight'),
@@ -95,7 +103,32 @@ function formball_game_line_up_form($form, &$form_state) {
       ),
     ),
   );
-  $form['line_up_field']['line_up_radios'] = array(
+
+  $form['player_values_container'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array(
+        'pure-u-1 pure-u-md-1-2',
+      ),
+    ),
+  );
+
+  $form['player_values_container']['player_values'] = array(
+    'values' => array(
+      '#markup' => '<div id="game-search-player-values"></div>',
+    ),
+  );
+
+  $form['line_up_strategy_container'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array(
+        'pure-u-1 pure-u-md-1-2',
+      ),
+    ),
+  );
+
+  $form['line_up_strategy_container']['line_up_radios'] = array(
     '#type' => 'radios',
     '#options' => array(
       0 => t('3-2-1'),
@@ -103,11 +136,15 @@ function formball_game_line_up_form($form, &$form_state) {
       2 => t('2-3-1'),
       3 => t('2-2-2'),
     ),
+    '#default_value' => 0,
   );
+
   $form['end_grid'] = array(
     '#type' => 'item',
     '#markup' => '</div>',
   );
+
+  $form['submit'] = array('#type' => 'submit', '#value' => t('Search Game'));
 
   return $form;
 }
@@ -194,6 +231,50 @@ function define_player_weight(&$player, $position, $count) {
       if($count === 1) $player->field_player_weight->set(9);
       else $player->field_player_weight->set(7);
       break;
+  }
+}
+
+function formball_player_values_ajax($ajax, $player_id) {
+
+  $node = node_load($player_id);
+  $player = entity_metadata_wrapper('node', $node);
+  $position = $player->field_player_position->value()->name;
+  $output = '';
+
+  $output .= '<table>';
+  $output .= '<caption class="player-pos-' . strtolower($position) . '">' . $player->field_player_name->value() . '</caption>';
+  $output .= '<tbody>';
+  $output .= '<tr><td>' . t('SPEED') . '</td><td>' . $player->field_player_speed->value() . '</td></tr>';
+  $output .= '<tr><td>' . t('TECHNIC') . '</td><td>' . $player->field_player_technic->value() . '</td></tr>';
+  $output .= '<tr><td>' . t('OFFENSE') . '</td><td>' . $player->field_player_offense->value() . '</td></tr>';
+  $output .= '<tr><td>' . t('DEFENSE') . '</td><td>' . $player->field_player_defense->value() . '</td></tr>';
+  $output .= '<tr><td>' . t('KICK') . '</td><td>' . $player->field_player_kick->value() . '</td></tr>';
+  $output .= '</tbody>';
+  $output .= '</table>';
+
+
+  if ($ajax == 'ajax') {
+
+    $commands = array();
+
+    // Ajax command to replace the 'ajax-searching' element with content
+    $commands[] = ajax_command_replace('#game-search-player-values', '<div id="game-search-player-values">' . $output . '</div>');
+
+    // Add a visual "changed" marker to the '#ajax-searching' element.
+    $commands[] = ajax_command_changed('#game-search-player-values');
+
+    // You have to return a renderable array for the page and ajax callback
+    ajax_deliver(array(
+      '#type' => 'ajax',
+      '#commands' => $commands,
+    ));
+  }
+
+  else {
+    // No ajax, just display the content on a page using renderable array
+    return array(
+      '#markup' => $output,
+    );
   }
 }
 

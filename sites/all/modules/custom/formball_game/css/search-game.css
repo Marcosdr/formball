@@ -3,6 +3,11 @@
   margin-right: 10px;
 }
 
+#game-search-player-values table {
+  position: relative;
+  bottom: 53px;
+}
+
 #line-up-players-table [class^=player-pos] {
   padding: 5px;
   font-weight: bold;
@@ -13,16 +18,20 @@
   margin-right: 10px;
 }
 
-#line-up-players-table .player-pos-gk {
-  background-color: green;
-}
-#line-up-players-table .player-pos-df {
-  background-color: blue;
-}
-#line-up-players-table .player-pos-md {
+#line-up-players-table .player-pos-gk,
+#game-search-player-values .player-pos-gk {
   background-color: blueviolet;
 }
-#line-up-players-table .player-pos-fw {
+#line-up-players-table .player-pos-df,
+#game-search-player-values .player-pos-df {
+  background-color: blue;
+}
+#line-up-players-table .player-pos-md,
+#game-search-player-values .player-pos-md {
+  background-color: green;
+}
+#line-up-players-table .player-pos-fw,
+#game-search-player-values .player-pos-fw {
   background-color: #ce5c00;
 }
 
@@ -48,4 +57,31 @@
   position: relative;
   top: 28px;
   background-color: bisque;
+}
+
+/* Table to display player values */
+
+#game-search-player-values table {
+  border-collapse: collapse;
+}
+
+#game-search-player-values table caption {
+  background: green;
+  color: #FFF;
+  font-weight: bold;
+  text-align: left;
+  padding: 7px 5px 5px 16px;
+}
+
+#game-search-player-values tbody tr:nth-child(even) {
+  background: #f0f0f2;
+}
+
+#game-search-player-values table tr:last-child td {
+  border-bottom: 0;
+}
+
+#game-search-player-values table td {
+  border-bottom: 1px solid #cecfd5;
+  padding: 3px 15px;
 }

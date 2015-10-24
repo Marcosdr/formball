@@ -60,6 +60,16 @@ function formball_game_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  // Players values ajax
+  $items['player/values/%/%'] = array(
+    'title' => 'Ajax search for player values',
+    'page callback' => 'formball_player_values_ajax',
+    'page arguments' => array(2, 3),
+    'access callback' => TRUE,
+    'file' => 'includes/formball_search_line_up.inc',
+    'type' => MENU_CALLBACK,
+  );
+
   // Main game page
   $items['match/%'] = array(
     'title' => 'Title',
