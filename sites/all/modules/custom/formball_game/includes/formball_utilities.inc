@@ -71,7 +71,9 @@ function update_game_field($player, $fields = array(), $condition_key = '', $con
 
   if($player != NULL) {
     foreach($fields as $key => $value) {
-      $player->$key = $value;
+      if(property_exists($player->key)) {
+        $player->$key = $value;
+      }
     }
   }
 }

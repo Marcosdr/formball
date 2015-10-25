@@ -69,8 +69,13 @@ function formball_game_schema() {
         'length' => '128',
         'not null' => FALSE,
       ),
+      'players' => array(
+        'description' => 'Line up players',
+        'type' => 'text',
+        'not null' => FALSE,
+      ),
       'lineup' => array(
-        'description' => 'Player Line up',
+        'description' => 'Line up',
         'type' => 'varchar',
         'length' => '64',
         'not null' => FALSE,

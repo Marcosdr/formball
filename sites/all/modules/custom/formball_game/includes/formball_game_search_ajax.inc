@@ -13,8 +13,8 @@ require_once(drupal_get_path('module', 'formball_game') . '/includes/formball_ut
  * @param $ajax
  * @return array
  */
-function formball_search_game_form_ajax($form, $form_state) {
-  $ajax = 'ajax';
+function formball_game_search_form_ajax($form, &$form_state) {
+
   //database queries and processing
   $match = FALSE;
 
@@ -31,45 +31,37 @@ function formball_search_game_form_ajax($form, $form_state) {
     $match = TRUE;
     $output = 'Game On! Player A: ' . $my_game->id . ' vs Player B: ' . $opponent_game->id;
   }
-  else $output = 'No Players';
+  else $output = 'There are currently no other games available';
 
-  if ($ajax == 'ajax') {
 
-    $commands = array();
+  // Ajax logic
+  $commands = array();
 
-    // Ajax command to replace te 'ajax-searching' element with content
-    $commands[] = ajax_command_replace('#ajax-searching', '<div id="ajax-searching">' . $output . '</div>');
+  // Ajax command to replace te 'ajax-searching' element with content
+  $commands[] = ajax_command_replace('#ajax-searching', '<div id="ajax-searching">' . $output . '</div>');
 
-    // Add a visual "changed" marker to the '#ajax-searching' element.
-    $commands[] = ajax_command_changed('#ajax-searching');
+  // 4) Verifies that everything is matching before moving forward
+  // Trigger our search_game JQuery plugin.
+  if($match) {
+    if(verify_match_data($my_game, $opponent_game)) {
 
-    // 4) Verifies that everything is matching before moving forward
-    // Trigger our search_game JQuery plugin.
-    if($match) {
-      if(verify_match_data($my_game, $opponent_game)) {
+      // Update the lineup strategy and players in the db for the current player
+      update_lineup_data($my_game, $form_state);
 
-        // 5) Redirects both players to the Game page
-        //$commands[] = ajax_command_invoke(NULL, 'start_game', array($my_game->path));
-        $redirect_url = $my_game->path; // 'user'
-        ctools_include('ajax');
-        ctools_add_js('ajax-responder');
-        $commands[] = ctools_ajax_command_redirect($redirect_url);
-      }
+      // 5) Redirects both players to the Game page
+      //$commands[] = ajax_command_invoke(NULL, 'start_game', array($my_game->path));
+      $redirect_url = $my_game->path; // 'user'
+      ctools_include('ajax');
+      ctools_add_js('ajax-responder');
+      $commands[] = ctools_ajax_command_redirect($redirect_url);
     }
-
-    // You have to return a renderable array for the page and ajax callback
-    return array(
-      '#type' => 'ajax',
-      '#commands' => $commands,
-    );
   }
 
-  else {
-    // No ajax, just display the content on a page using renderable array
-    return array(
-      '#markup' => $output,
-    );
-  }
+  // You have to return a renderable array for the page and ajax callback
+  return array(
+    '#type' => 'ajax',
+    '#commands' => $commands,
+  );
 
 }
 
@@ -244,4 +236,46 @@ function verify_match_data(&$player = NULL, &$opponent = NULL){
   return $proceed;
 }
 
+/**
+ * Update the lineup strategy and players in the db for the current player.
+ *
+ * @param $my_game
+ */
+function update_lineup_data($my_game, &$form_state) {
 
+  $sorted_line_up = sort_line_up_weights($form_state);
+
+  $fields = array(
+    'lineup' => $form_state['values']['line_up_radios'],
+    'players' => serialize($sorted_line_up),
+  );
+
+  update_game_field($my_game, $fields, 'sid', $my_game->sid);
+}
+
+/**
+ * Sort the weights of the tabledrag players.
+ *
+ * @param $form_state
+ * @return array of players sorted by key for the line up
+ */
+function sort_line_up_weights(&$form_state) {
+
+  $sorted_line_up = array();
+  $unsorted_line_up = array();
+  foreach ($form_state['values']['line_up_players'] as $id => $player) {
+    $unsorted_line_up[$player['weight']] = array(
+      'name' => $player['name_value'],
+      'position' => $player['position_value'],
+      'id' => $id,
+    );
+  }
+  ksort($unsorted_line_up);
+  static $pos = 1;
+  foreach($unsorted_line_up as $player) {
+    $sorted_line_up[$pos] = $player;
+    $pos++;
+  }
+
+  return $sorted_line_up;
+}

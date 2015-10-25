@@ -1,11 +1,7 @@
 <?php
-require_once(drupal_get_path('module', 'formball_game') . '/includes/formball_search_game_ajax.inc');
+require_once(drupal_get_path('module', 'formball_game') . '/includes/formball_game_search_ajax.inc');
 
-function formball_game_search_form($form, &$form_state) {
-
-  // Identify that the elements in 'player_items' are a collection, to
-  // prevent Form API from flattening the array when submitted.
-  $form['player_items']['#tree'] = TRUE;
+function formball_game_search_form($form, $form_state) {
 
   // Fetch the players data from the database, ordered by weight ascending.
   $line_up_players = get_line_up_players();
@@ -23,8 +19,10 @@ function formball_game_search_form($form, &$form_state) {
         'pure-u-1 pure-u-md-1-2',
       ),
     ),
+    // Identify that the elements in 'line_up_players' are a collection, to
+    // prevent Form API from flattening the array when submitted.
+    '#tree' => true,
   );
-
 
   // Iterate through each line up player.
   foreach($line_up_players as $key_position => $position){
@@ -36,7 +34,7 @@ function formball_game_search_form($form, &$form_state) {
           '#markup' => '<div class="player-pos-' . strtolower($key_position) .
                        '">' . $key_position . '</div>',
         ),
-        'name' => array (
+        'name' => array(
           '#type' => 'link',
           '#title' => $player->field_player_name->value(),
           '#href' => 'player/values/nojs/' . $id,
@@ -46,11 +44,20 @@ function formball_game_search_form($form, &$form_state) {
             'effect' => 'fade',
           )),
 
+        'name_value' => array(
+          '#type' => 'value',
+          '#value' => $player->field_player_name->value(),
+        ),
+
+        'position_value' => array(
+          '#type' => 'value',
+          '#value' => $key_position,
+        ),
+
         'weight' => array(
           '#type' => 'weight',
           '#title' => t('Weight'),
           '#default_value' => $player->field_player_weight->value(),
-          '#delta' => 10,
           '#title_display' => 'invisible',
         ),
       );
@@ -72,7 +79,7 @@ function formball_game_search_form($form, &$form_state) {
     '#markup' => '<img src="' . drupal_get_path('module', 'formball_game') . '/images/lineup-3-2-1.jpg' . $width,
     '#states' => array(
       'visible' => array(
-        ':input[name="line_up_radios"]' => array('value' => '0'),
+        ':input[name="line_up_radios"]' => array('value' => '3_2_1'),
       ),
     ),
   );
@@ -81,7 +88,7 @@ function formball_game_search_form($form, &$form_state) {
     '#markup' => '<img src="' . drupal_get_path('module', 'formball_game') . '/images/lineup-3-1-2.jpg' . $width,
     '#states' => array(
       'visible' => array(
-        ':input[name="line_up_radios"]' => array('value' => '1'),
+        ':input[name="line_up_radios"]' => array('value' => '3_1_2'),
       ),
     ),
   );
@@ -90,7 +97,7 @@ function formball_game_search_form($form, &$form_state) {
     '#markup' => '<img src="' . drupal_get_path('module', 'formball_game') . '/images/lineup-2-3-1.jpg' . $width,
     '#states' => array(
       'visible' => array(
-        ':input[name="line_up_radios"]' => array('value' => '2'),
+        ':input[name="line_up_radios"]' => array('value' => '2_3_1'),
       ),
     ),
   );
@@ -100,7 +107,7 @@ function formball_game_search_form($form, &$form_state) {
     '#states' => array(
       // Only show this field when the 'toggle_me' checkbox is enabled.
       'visible' => array(
-        ':input[name="line_up_radios"]' => array('value' => '3'),
+        ':input[name="line_up_radios"]' => array('value' => '2_2_2'),
       ),
     ),
   );
@@ -132,13 +139,12 @@ function formball_game_search_form($form, &$form_state) {
   $form['line_up_strategy_container']['line_up_radios'] = array(
     '#type' => 'radios',
     '#options' => array(
-      0 => t('3-2-1'),
-      1 => t('3-1-2'),
-      2 => t('2-3-1'),
-      3 => t('2-2-2'),
+      '3_2_1' => t('3-2-1'),
+      '3_1_2' => t('3-1-2'),
+      '2_3_1' => t('2-3-1'),
+      '2_2_2' => t('2-2-2'),
     ),
-    '#default_value' => 0,
-    '#suffix' => '<div id="ajax-searching-b"></div>',
+    '#default_value' => '3_2_1',
   );
 
   $form['end_grid'] = array(
@@ -146,6 +152,7 @@ function formball_game_search_form($form, &$form_state) {
     '#markup' => '</div>',
   );
 
+  $form['actions'] = array('#type' => 'actions');
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Search Game'),
@@ -153,14 +160,14 @@ function formball_game_search_form($form, &$form_state) {
       'class' => array('btn'),
     ),
     '#ajax' => array(
-      'callback' => 'formball_search_game_form_ajax',
-      'wrapper' => 'ajax-searching-b',
+      'callback' => 'formball_game_search_form_ajax',
+      'wrapper' => 'ajax-searching',
     ),
+    '#prefix' => '<div id="ajax-searching"></div>',
   );
 
   return $form;
 }
-
 
 function get_line_up_players(){
   $db = 'field_data_field_player_team';
@@ -322,6 +329,7 @@ function theme_formball_game_search_form($variables) {
   // be used to identify the <table> element containing our tabledrag form.
   $table_id = 'line-up-players-table';
 
+  // $form['line_up_players']['players_list']['table']['#markup']
   $form['line_up_players']['players_list']['table']['#markup'] = theme('table', array(
     'header' => $header,
     'rows' => $rows,
