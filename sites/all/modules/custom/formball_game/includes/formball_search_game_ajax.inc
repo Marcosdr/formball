@@ -1,32 +1,5 @@
 <?php
-  require_once(drupal_get_path('module', 'formball_game') . '/includes/formball_utilities.inc');
-require_once(drupal_get_path('module', 'formball_game') . '/includes/formball_search_line_up.inc');
-/**
- * Function to create and ajax link in the search page to look for games
- * @return array
- */
-function formball_search_game_page() {
-  $build = array(
-    'line_up_header' => array(
-      '#type' => 'markup',
-      '#markup' => '<div class="header"><h3>' . t('Select your line up') . '</h3></div>',
-    ),
-
-    'line_up_form' => drupal_get_form('formball_game_line_up_form'),
-
-    'search_game' => array (
-      '#type' => 'link',
-      '#title' => t('Search Game'),
-      '#href' => 'search-game/nojs',
-      '#prefix' => '<div class="btn">',
-      '#suffix' => '</div><div id="ajax-searching"></div>',
-      '#ajax' => array(
-        'effect' => 'fade',
-      ),
-    ),
-  );
-  return $build;
-}
+require_once(drupal_get_path('module', 'formball_game') . '/includes/formball_utilities.inc');
 
 /**
  * Formball Search Game
@@ -40,8 +13,8 @@ function formball_search_game_page() {
  * @param $ajax
  * @return array
  */
-function formball_search_game_ajax($ajax) {
-
+function formball_search_game_form_ajax($form, $form_state) {
+  $ajax = 'ajax';
   //database queries and processing
   $match = FALSE;
 
@@ -85,10 +58,10 @@ function formball_search_game_ajax($ajax) {
     }
 
     // You have to return a renderable array for the page and ajax callback
-    ajax_deliver(array(
+    return array(
       '#type' => 'ajax',
       '#commands' => $commands,
-      ));
+    );
   }
 
   else {
@@ -263,7 +236,7 @@ function verify_match_data(&$player = NULL, &$opponent = NULL){
   $proceed = false;
 
   if($player->opponent == $opponent->sid
-  && $opponent->opponent == $player->sid) {
+    && $opponent->opponent == $player->sid) {
     // verify that both are in PLAY mode, use Sleep here
     $proceed = true;
   }

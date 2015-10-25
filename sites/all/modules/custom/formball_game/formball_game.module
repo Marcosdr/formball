@@ -45,19 +45,10 @@ function formball_game_menu() {
   $items['search-game'] = array(
     'title' => 'Search for games',
     'description' => 'Page to search for available games',
-    'page callback' => 'formball_search_game_page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('formball_game_search_form'),
     'access callback' => TRUE,
-    'file' => 'formball_search_game.page.inc',
-  );
-
-  // Search game ajax
-  $items['search-game/%'] = array(
-    'title' => 'Ajax search for games',
-    'page callback' => 'formball_search_game_ajax',
-    'page arguments' => array(1),
-    'access callback' => TRUE,
-    'file' => 'formball_search_game.page.inc',
-    'type' => MENU_CALLBACK,
+    'file' => 'includes/formball_game_search.inc',
   );
 
   // Players values ajax
@@ -66,7 +57,7 @@ function formball_game_menu() {
     'page callback' => 'formball_player_values_ajax',
     'page arguments' => array(2, 3),
     'access callback' => TRUE,
-    'file' => 'includes/formball_search_line_up.inc',
+    'file' => 'includes/formball_game_search.inc',
     'type' => MENU_CALLBACK,
   );
 
@@ -98,11 +89,20 @@ function formball_game_menu() {
  * @return array
  */
 function formball_game_theme() {
-  return array(
-    // Theme function for the search form line up.
-    'formball_game_line_up_form' => array(
-      'render element' => 'form',
-      'file' => 'includes/formball_search_line_up.inc',
-    ),
+  $module_path = drupal_get_path('module', 'formball_game');
+
+  // Theme for the line up players table
+  $items['formball_game_search_form'] = array(
+    'render element' => 'form',
+    'file' => 'includes/formball_game_search.inc',
   );
+
+  // theme for the game elements
+  $items['formball_game_form'] = array (
+    'render element' => 'form',
+    'template' => 'game',
+    'path' => $module_path . '/theme',
+  );
+
+  return $items;
 }

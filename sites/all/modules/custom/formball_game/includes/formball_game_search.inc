@@ -1,6 +1,7 @@
 <?php
+require_once(drupal_get_path('module', 'formball_game') . '/includes/formball_search_game_ajax.inc');
 
-function formball_game_line_up_form($form, &$form_state) {
+function formball_game_search_form($form, &$form_state) {
 
   // Identify that the elements in 'player_items' are a collection, to
   // prevent Form API from flattening the array when submitted.
@@ -137,6 +138,7 @@ function formball_game_line_up_form($form, &$form_state) {
       3 => t('2-2-2'),
     ),
     '#default_value' => 0,
+    '#suffix' => '<div id="ajax-searching-b"></div>',
   );
 
   $form['end_grid'] = array(
@@ -144,7 +146,17 @@ function formball_game_line_up_form($form, &$form_state) {
     '#markup' => '</div>',
   );
 
-  $form['submit'] = array('#type' => 'submit', '#value' => t('Search Game'));
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Search Game'),
+    '#attributes' => array(
+      'class' => array('btn'),
+    ),
+    '#ajax' => array(
+      'callback' => 'formball_search_game_form_ajax',
+      'wrapper' => 'ajax-searching-b',
+    ),
+  );
 
   return $form;
 }
@@ -282,7 +294,7 @@ function formball_player_values_ajax($ajax, $player_id) {
  * Theme function for the line up players form
  * @param $variables
  */
-function theme_formball_game_line_up_form($variables) {
+function theme_formball_game_search_form($variables) {
   $form = $variables['form'];
   $rows = array();
 

@@ -98,17 +98,4 @@ function formball_game_form_submit($form, &$form_state) {
 
 }
 
-/**
- * Implements hook_theme()
- * Point to the theme for the game elements
- */
 
-function formball_game_theme($existing, $type, $theme, $path){
-  $module_path = drupal_get_path('module', 'formball_game');
-  $items['formball_game_form'] = array (
-    'render element' => 'form',
-    'template' => 'game',
-    'path' => $module_path . '/theme',
-  );
-  return $items;
-}
