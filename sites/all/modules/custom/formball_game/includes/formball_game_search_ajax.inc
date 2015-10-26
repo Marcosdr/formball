@@ -14,7 +14,7 @@ require_once(drupal_get_path('module', 'formball_game') . '/includes/formball_ut
  * @return array
  */
 function formball_game_search_form_ajax($form, &$form_state) {
-
+  $output = '';
   //database queries and processing
   $match = FALSE;
 
@@ -28,11 +28,15 @@ function formball_game_search_form_ajax($form, &$form_state) {
   //3) Sets the match data for both players
   if($my_game != NULL && $opponent_game != NULL) {
     set_match($my_game, $opponent_game);
-    $match = TRUE;
-    $output = 'Game On! Player A: ' . $my_game->id . ' vs Player B: ' . $opponent_game->id;
+    if(!is_null($my_game->path) && !is_null($opponent_game->path)) {
+      $match = TRUE;
+      $output .= 'Game On! Player A: ' . $my_game->id . ' vs Player B: ' . $opponent_game->id;
+    }
+    else {
+      $output .= 'ERROR: The paths have not been set correctly.';
+    }
   }
-  else $output = 'There are currently no other games available';
-
+  else $output .= 'There are currently no other games available';
 
   // Ajax logic
   $commands = array();
@@ -49,7 +53,6 @@ function formball_game_search_form_ajax($form, &$form_state) {
       update_lineup_data($my_game, $form_state);
 
       // 5) Redirects both players to the Game page
-      //$commands[] = ajax_command_invoke(NULL, 'start_game', array($my_game->path));
       $redirect_url = $my_game->path; // 'user'
       ctools_include('ajax');
       ctools_add_js('ajax-responder');
@@ -66,14 +69,14 @@ function formball_game_search_form_ajax($form, &$form_state) {
 }
 
 /**
- * Set an entry in the formball_games db with active search on
+ * Creates a new game entry into the db
+ * Sets an entry in the formball_games db with active search on
  * @return NULL/mixed
  * @throws \Exception
  */
 function create_new_game() {
   $session_id = session_id();
   $_SESSION['formball']['lists'] = $session_id;
-
   global $user;
 
   $game_id = db_insert('formball_games')
@@ -172,6 +175,7 @@ function set_match(&$player = NULL, &$opponent = NULL) {
 
     // Check to see if the current player has it's path values already set from the opponent
     $path = search_game_field('path', 'sid', $player->sid);
+
     if(!is_null($path)) {
       $player_type = search_game_field('player', 'sid', $player->sid);
       // If the values have been updated, then update the current player records
@@ -187,6 +191,7 @@ function set_match(&$player = NULL, &$opponent = NULL) {
       $path = 'match/game-';
       $path .= drupal_substr($player->sid, 0, 7);
       $path .= drupal_substr($opponent->sid, 0, 7);
+
       if($player->timestamp < $opponent->timestamp) {
         $player_type = 'A';
         $opponent_type = 'B';
