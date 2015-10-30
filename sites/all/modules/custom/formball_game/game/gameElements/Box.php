@@ -2,18 +2,23 @@
 
 class Box {
   private $name;
+  private $coordinate;
   private $type;
   private $hasPlayer;
+
+  // Properties to position the box checkboxes on the field, for markup.
   public $pos_x;
   public $pos_y;
 
-  public function __construct($player, $row, $column, $posX, $posY) {
-    $this->name = 'player_' . $player . '_' . $row . '_' . $column;
-    $this->player = $player;
-    $this->hasPlayer = FALSE;
-    $this->type = $player;
+  public function __construct($player_type, $row, $column, $posX, $posY) {
+    $this->name = 'box_' . $player_type . '_' . $row . '_' . $column;
+    $this->coordinate = array(
+      'row' => $row,
+      'col' => $column,
+    );
     $this->pos_x = $posX;
     $this->pos_y = $posY;
+    $this->type = $player_type;
   }
 
   /**
@@ -31,10 +36,24 @@ class Box {
   }
 
   /**
+   * @param mixed $hasPlayer
+   */
+  public function setPlayer($hasPlayer) {
+    $this->hasPlayer = $hasPlayer;
+  }
+
+  /**
    * @return bool
    */
   public function has_player() {
     return $this->hasPlayer;
+  }
+
+  /**
+   * @return array
+   */
+  public function getCoordinate() {
+    return $this->coordinate;
   }
 
 }

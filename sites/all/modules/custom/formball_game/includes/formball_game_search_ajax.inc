@@ -217,7 +217,7 @@ function set_match(&$player = NULL, &$opponent = NULL) {
     }
 
     // After making all the necessary changes, setup the players status to PLAY
-    update_state( $player, 'PLAY' );
+    update_state( $player, 'START' );
   }
 }
 

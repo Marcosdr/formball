@@ -4,7 +4,7 @@
       <?php
 
       foreach ($form as $key => $value) {
-        if (strpos($key, 'player_') !== FALSE) {
+        if (strpos($key, 'box_') !== FALSE) {
           $checkbox = $form[$key];
           $checked = $checkbox['#value'] == 1 ? 'checked' : '';
           print $checkbox['#prefix'];

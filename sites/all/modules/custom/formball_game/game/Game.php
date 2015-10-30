@@ -9,17 +9,16 @@ class Game {
   public $world;
   protected $renderer;
 
-  public function __construct() {
-    $this->world = new GameWorld();
+  public function __construct($my_game, $opponent_game) {
+    $this->world = new GameWorld($my_game, $opponent_game);
     $this->renderer = new GameRenderer($this->world);
   }
 
-  public function render($option = '') {
-    //$this->world->update();
-    $output = $this->renderer->render($option);
+  public function render() {
+    $this->world->update();
+    $output = $this->renderer->render();
     return $output;
   }
-
 
 }
 

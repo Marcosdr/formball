@@ -8,7 +8,8 @@ function formball_game_page($arg1) {
   $build = array(
     'header' => array(
       '#type' => 'markup',
-      '#markup' => 'Here goes the game ' . $arg1 . ' elements',
+      '#markup' => 'Here goes the game ' . $arg1 . ' elements' .
+                    '<br/> session id: ' . session_id(),
     ),
     'game_table' => drupal_get_form('formball_game_form'),
 
@@ -26,12 +27,16 @@ function formball_game_page($arg1) {
 
 function formball_game_form($form, &$form_state) {
 
-  // Create an instance of the game
-  $game = new Game();
+  $session = session_id();
+  $player = search_game('sid', $session);
+  $opponent = search_game('sid', $player->opponent);
+
+  // Create an instance of the game and pass the player and opponent object.
+  $game = new Game($player, $opponent);
 
   // Create the players checkboxes
-  $checkboxes = $game->render('boxes');
-  foreach ($checkboxes as $checkbox){
+  $form_output = $game->render();
+  foreach ($form_output['boxes'] as $checkbox){
     $key = $checkbox->id;
 
     $form[$key] = array(
@@ -49,8 +54,8 @@ function formball_game_form($form, &$form_state) {
 
   // Create array for Ball positions
   $options = array();
-  $radios = $game->render('balls');
-  foreach ($radios as $radio){
+
+  foreach ($form_output['balls'] as $radio){
     $key = $radio->id;
     $options[$key] = $key;
   }
@@ -63,7 +68,7 @@ function formball_game_form($form, &$form_state) {
 
   $form['store'] = array(
     '#type' => 'value',
-    '#value' => $radios,
+    '#value' => $form_output['balls'],
   );
 
 

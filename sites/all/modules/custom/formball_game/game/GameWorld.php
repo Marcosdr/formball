@@ -1,21 +1,24 @@
 <?php
 
-require_once(drupal_get_path('module', 'formball_game') . '/game/gameElements/GameUser.php');
-require_once(drupal_get_path('module', 'formball_game') . '/game/gameElements/GameOpponent.php');
+require_once(drupal_get_path('module', 'formball_game') . '/game/gameElements/Team.php');
 require_once(drupal_get_path('module', 'formball_game') . '/game/gameElements/Field.php');
 
 class GameWorld {
 
-  protected $session_id;
-  protected $game_user;
-  protected $game_opponent;
+  public $teams;
   protected $field;
 
-  public function __construct() {
-    $this->session_id = session_id();
-    $this->game_user = new GameUser($this->session_id);
-    $this->game_opponent = new GameOpponent($this->game_user);
+  public function __construct($my_game, $opponent_game) {
     $this->field = new Field();
+    $this->teams = array(
+      'player' => new Team($my_game, $this->field),
+      'opponent' => new Team($opponent_game, $this->field),
+    );
+  }
+
+  // Update the players and field elements accordingly
+  public function update() {
+    $this->teams['player']->update($this->field);
   }
 
   /**

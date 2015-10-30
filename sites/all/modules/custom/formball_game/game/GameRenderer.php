@@ -14,18 +14,11 @@ class GameRenderer {
     $this->init_game_objects();
   }
 
-  public function render($item) {
-    $output = '';
-    switch($item) {
-      case 'boxes':
-        $output = $this->render_boxes();
-        break;
-      case 'balls':
-        $output = $this->render_balls();
-        break;
-    }
-
-    return $output;
+  public function render() {
+    $form = array();
+    $form['boxes'] = $this->render_boxes();
+    $form['balls'] = $this->render_balls();
+    return $form;
   }
 
   private function init_game_objects() {
@@ -41,7 +34,7 @@ class GameRenderer {
       $form_element = new FormElement();
       $form_element->id = $box->getName();
       $form_element->title = '';
-      $checked = $box->has_player() == 1 ? 'checked' : '';
+      $checked = $box->has_player() == true ? 'checked' : '';
       $form_element->prefix = '<div class="' . $box->getName() .'" style="' .
         'position: absolute; ' .
         'top: ' . $box->pos_y . '%; ' .
@@ -68,7 +61,7 @@ class GameRenderer {
         'position: absolute; ' .
         'top: ' . $ball->pos_y . '%; ' .
         'left: '. $ball->pos_x . '%;">';
-      $form_element->value = $ball->has_ball();
+      $form_element->value = $ball->getName() === $ball->getPosition();
       $form_element->suffix = '<label for="' . $ball->getName() . '"></label>' . '</div>';
 
       $form_elements[] = $form_element;
