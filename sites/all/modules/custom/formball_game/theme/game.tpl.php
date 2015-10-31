@@ -3,49 +3,18 @@
     <div id="game-elements">
       <?php
 
-      foreach ($form as $key => $value) {
+      foreach ($form as $key => $checkbox) {
         if (strpos($key, 'box_') !== FALSE) {
-          $checkbox = $form[$key];
-          $checked = $checkbox['#value'] == 1 ? 'checked' : '';
-          print $checkbox['#prefix'];
-          print '<input id="' . $checkbox['#id'] .
-            '" class="' . implode($checkbox['#attributes']['class']) .
-            '" type="' . $checkbox['#type'] .
-            '" value="' . $checkbox['#value'] .
-            '" name="' . $checkbox['#name'] .
-            '" ' . $checked .
-            '></input>';
-          print $form[$key]['#suffix'];
-
-          // Hide the form elements from rendering after calling
-          // drupal_render_children($form) at the bottom of this page
-          hide($checkbox);
+          print render($form[$key]);
         }
       }
 
-
-      $radios = $form['store']['#value'];
-      unset($form['store']);
-
-      foreach ($radios as $radio) {
-          $ball = $form['ball'][$radio->id];
-          print $radio->prefix;
-          print '<input id="' . $ball['#id'] .
-            '" type="' . $ball['#type'] .
-            '" value="' . $ball['#value'] .
-            '" name="' . $ball['#name'] .
-            '></input>';
-          print $radio->suffix;
-
-          // Hide the form elements from rendering after calling
-          // drupal_render_children($form) at the bottom of this page
-          hide($form['ball']);
+      foreach($form['ball'] as $key => $ball) {
+        if (strpos($key, 'ball_') !== FALSE) {
+          print render($form['ball'][$key]);
+        }
       }
-      unset($radios);
-
-      print ('<div style="position:relative;">');
-
-      print ('</div>');
+      hide($form['ball']);
 
       ?>
     </div>

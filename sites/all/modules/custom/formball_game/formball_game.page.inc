@@ -38,9 +38,9 @@ function formball_game_form($form, &$form_state) {
   $form_output = $game->render();
   foreach ($form_output['boxes'] as $checkbox){
     $key = $checkbox->id;
-
+    // debug $coords = substr($key, -3);
     $form[$key] = array(
-      '#title' => '',
+      '#title' => '<div class="coords"></div>',
       '#type' => 'checkbox',
       '#default_value' => $checkbox->value,
       '#attributes' => array(
@@ -48,7 +48,7 @@ function formball_game_form($form, &$form_state) {
       ),
       '#prefix' => $checkbox->prefix,
       '#suffix' => $checkbox->suffix,
-      '#disabled' => $checkbox->is_opponent,
+      //'#disabled' => $checkbox->is_opponent,
     );
   }
 
@@ -71,12 +71,40 @@ function formball_game_form($form, &$form_state) {
     '#value' => $form_output['balls'],
   );
 
+  $form['#after_build'][] = 'formball_game_after_build';
+
+  $val = 1;
+
+
+
 
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => 'Submit',
   );
 
+  return $form;
+}
+
+/**
+ * Add Div around each radio element
+ * @param $element
+ * @param $form_state
+ * @return mixed
+ */
+function formball_game_after_build(&$form, &$form_state) {
+  $form_output_balls = $form['store']['#value'];
+  foreach($form['ball'] as $key => $value) {
+    if (strpos($key, 'ball_') !== FALSE) {
+      // debug
+      //$coords = substr($key, -3);
+      $form['ball'][$key]['#prefix'] = $form_output_balls[$key]->prefix;
+      $form['ball'][$key]['#suffix'] = $form_output_balls[$key]->suffix;
+      $form['ball'][$key]['#default_value'] = $form_output_balls[$key]->value;
+      $form['ball'][$key]['#title'] = '<div class="coords"></div>';
+      //$form['ball'][$key]['#value'] = $form_output_balls[$key]->suffix;
+    }
+  }
   return $form;
 }
 

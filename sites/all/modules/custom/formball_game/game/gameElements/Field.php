@@ -32,7 +32,7 @@ class Field {
           if($player_type == 'A') $pos_x = $j * $this->column_pos; /* $column * 30 */
           if($player_type == 'B') $pos_x = $j * $this->column_pos + $this->offset_player_B;
           $pos_y = $i * $this->row_pos;
-          $this->boxes[$row . '_' . $column] = new Box($player_type, $row, $column, $pos_x, $pos_y);
+          $this->boxes[$player_type . '_' . $row . '_' . $column] = new Box($player_type, $row, $column, $pos_x, $pos_y);
         }
       }
     }

@@ -41,8 +41,7 @@ class GameRenderer {
         'left: '. $box->pos_x . '%;">';
       $form_element->value = $box->has_player();
       $form_element->attribute = $checked;
-      $form_element->suffix = '<label for="' . $box->getName() . '"><span></span></label>' .
-        '</div>';
+      $form_element->suffix = '</div>';
       $form_element->is_opponent = $box->is_type() !== 'A';
 
       $form_elements[] = $form_element;
@@ -62,9 +61,8 @@ class GameRenderer {
         'top: ' . $ball->pos_y . '%; ' .
         'left: '. $ball->pos_x . '%;">';
       $form_element->value = $ball->getName() === $ball->getPosition();
-      $form_element->suffix = '<label for="' . $ball->getName() . '"></label>' . '</div>';
-
-      $form_elements[] = $form_element;
+      $form_element->suffix = '</div>';
+      $form_elements[$form_element->id] = $form_element;
 
     }
 

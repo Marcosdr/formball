@@ -85,16 +85,51 @@
  *------------------------------------------------------
  */
 
-#game-wrapper input[type="checkbox"] + label span {
+
+#game-wrapper .form-type-checkbox,
+#game-wrapper .form-type-radio {
   display:inline-block;
-  width:22px;
-  height:22px;
+  margin: 0;
+  position:relative;
+  z-index: 999;
+}
+
+#game-wrapper .form-type-checkbox input[type="checkbox"] {
+  position: relative;
+
+  opacity: 0;
+  vertical-align: middle;
+}
+
+#game-wrapper .form-type-checkbox input[type="checkbox"],
+#game-wrapper .form-type-checkbox input[type="checkbox"] + label {
   cursor: pointer;
+}
+
+#game-wrapper .form-type-checkbox input[type="checkbox"] + label {
+  width: 0px;
+  height: 0px;
+}
+
+#game-wrapper .form-type-checkbox input[type="checkbox"],
+#game-wrapper .form-type-checkbox input[type="checkbox"] + label::before,
+#game-wrapper .form-type-checkbox input[type="checkbox"]:checked + label::before {
+  width: 22px;
+  height: 22px;
+  z-index: 999;
+}
+
+#game-wrapper .form-type-checkbox input[type="checkbox"] + label:before {
   background:url(../images/player-empty.png) left top no-repeat;
 }
 
-#game-wrapper input[type="checkbox"]:hover + label span {
-  background:url(../images/player-empty.png) left -22px no-repeat;
+#game-wrapper .form-type-checkbox input[type="checkbox"] + label:before,
+#game-wrapper .form-type-checkbox input[type="checkbox"]:checked + label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-block;
 }
 
 /**
@@ -105,16 +140,37 @@
 
   /* Player boxes */
 
-input[type="checkbox"][class*=box_A]:checked + label span {
+#game-wrapper .form-type-checkbox input[type="checkbox"][class*=box_A]:hover + label::before {
+  background:url(../images/player-empty.png) left -22px no-repeat;
+}
+
+#game-wrapper .form-type-checkbox input[type="checkbox"][class*=box_A]:checked + label::before {
   background:url(../images/player-colors.png) left -22px no-repeat;
+}
+
+/*
+input[type="checkbox"][class*=box_A]:checked + label {
+  background:url(../images/player-colors.png) left -22px no-repeat;
+  z-index: 99;
 }
 
 input[type="checkbox"][class*=box_A]:checked + label:hover span {
   background:url(../images/player-colors.png) left -44px no-repeat;
 }
+*/
 
 /* Opponent boxes */
 
+#game-wrapper .form-type-checkbox input[type="checkbox"][class*=box_B]:checked + label:before {
+  background:url(../images/opponent-colors.png) left -22px no-repeat;
+}
+
+/* Hide opponent boxes */
+#game-wrapper div[class*=box_B] {
+  /* display: none; */
+}
+
+/*
 input[type="checkbox"][class*=box_B]:checked + label span {
   background:url(../images/opponent-colors.png) left -22px no-repeat;
 }
@@ -122,4 +178,13 @@ input[type="checkbox"][class*=box_B]:checked + label span {
 input[type="checkbox"][class*=box_B]:checked + label:hover span {
   background:url(../images/opponent-colors.png) left -44px no-repeat;
 }
+*/
 
+
+/*
+ * DEBUG CSS
+ */
+
+.coords {
+  font-size: 10px;
+}
